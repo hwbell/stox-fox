@@ -3,18 +3,32 @@
 body {
   font-family: Quicksand;
   background-size: 100%;
-  background: -webkit-gradient(linear, left top, right bottom, from(rgba(112, 0, 216, 0.25)), to(rgb(245,245,245)));
+  background: rgb(246, 215, 185)
 }
 
 .App {
   text-align: center;
 }
 
+
+/* for no padding between bootstrap cols */
+.padding-0 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
 .orange-gradient {
-  background: -webkit-gradient(linear, left top, right bottom, from(rgb(255, 159, 49)), to(rgb(252, 76, 32)));
+  background: rgb(248, 104, 47);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.expand-button {
+  transition: all 0.3s ease;
+  background: rgb(199, 152, 108);
+  border: none;
+  margin: 0vh 4vh;
 }
 
 @keyframes App-logo-spin {

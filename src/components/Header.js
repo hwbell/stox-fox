@@ -19,13 +19,14 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="text-center row" style={styles.header}>
-          <p className="col" style={styles.time} >{`updated @ ${this.props.lastRefreshed}`}</p>
+        <div className="row" style={styles.header}>
+          
           <p className="col" style={styles.title} >stoxfox</p>
+
           <i className="col fab fa-wolf-pack-battalion orange-gradient" style={styles.icon}></i>
+
+          {/* <p className="col" style={styles.time} >{`updated @ ${this.props.lastRefreshed}`}</p> */}
         </div>
-      </div>
     );
   }
 }
@@ -33,23 +34,27 @@ class Header extends Component {
 const styles = {
   header: {
     width: '100%',
-    margin: '3vh'
+    margin: '1vh auto 3vh auto'
   },
   time: {
-    margin: '2vh',
+    // border: '1px solid black',
+    margin: '3vh 2vh',
     fontWeight: 'bold',
     fontSize: 12,
     textAlign: 'left',
     minWidth: 100
   },
   title: {
+    // border: '1px solid black',
+    margin: '2vh',
     fontWeight: 'bold',
     fontSize: 32,
     // margin: 'auto auto',
   },
   icon: {
-    margin: '1vh',
-    fontSize: 30,
+    // border: '1px solid black',
+    margin: '2vh',
+    fontSize: 40,
   }
 }
 

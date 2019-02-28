@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
 // modules
-import { ListGroup, ListGroupItem, Collapse, Button, CardBody, Card } from 'reactstrap';
+import { ListGroup } from 'reactstrap';
 
+// components
+import SectorListItem from './SectorListItem';
 
 // styling
 import 'bootstrap/dist/css/bootstrap.css';
@@ -24,10 +26,17 @@ class Header extends Component {
   render() {
     // make below easier to read
     const data = this.props.data;
+
+    // get the keys, which are the sectors - 'Energy', 'Industrials', 'Financials', 'Utilities', 'Consumer Discretionary', 
+    //                'Consumer Staples', 'Information Technology', 'Materials', 
+    //                'Communication Services', 'Real Estate', 'Health Care'
     const performanceProps = Object.keys(data);
 
     return (
       <div className="container">
+
+      {/* each ListGroup contains a performance metric - real time performance 1 day performance,
+      and the delta for each sector   */}
         <ListGroup>
           {
             performanceProps.map((metric, i) => {
@@ -35,32 +44,12 @@ class Header extends Component {
               const sectors = Object.keys(data[metric]);
               return (
                 i > 0 && 
-                <ListGroupItem key={i}>
-                  {/* get rid of the 'Rank (letter): ' 
-                  the <p> below shows each performance metric*/}
-
-                  <p style={styles.listTitle}>{metric.slice(7)}</p>
-                  
-                  {/* now map within each metric to show corresponding
-                  performance according to the metric. show delta as red for neg
-                  and blue for pos. see below style */}
-
-                  {sectors.map((sector, i) => {
-                    let delta = data[metric][sector];
-                    {/* check for a - symbol */}
-                    let deltaColor = delta.indexOf('-') !== -1 ? 'red' : 'blue';
-
-                    return (
-                      <div key={i} className="row">
-                      {/* here we show each sector and its change */}
-                        <p style={styles.sector}>{`${sector}:`}</p>
-                        <p style={{margin: '1vh', color: deltaColor}}>{delta}</p>
-
-                      </div>
-                    )
-                  })}
-
-                </ListGroupItem>
+                <SectorListItem 
+                  mapKey={i}
+                  data={data}
+                  metric={metric}
+                  sectors={sectors}
+                />
               )
             })
           }
