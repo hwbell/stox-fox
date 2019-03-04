@@ -36,14 +36,7 @@ const styles = {
     width: '100%',
     margin: '1vh auto 3vh auto'
   },
-  time: {
-    // border: '1px solid black',
-    margin: '3vh 2vh',
-    fontWeight: 'bold',
-    fontSize: 12,
-    textAlign: 'left',
-    minWidth: 100
-  },
+ 
   title: {
     // border: '1px solid black',
     margin: '2vh',

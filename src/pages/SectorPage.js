@@ -7,10 +7,6 @@ import '../App.css';
 // components
 import SectorsList from '../components/SectorsList';
 
-// modules
-const alpha = require('alphavantage')({ key: process.env.alphaKey });
-
-
 class SectorPage extends Component {
 
   constructor(props) {
@@ -35,7 +31,7 @@ class SectorPage extends Component {
 
   getSectorData() {
     // get the data
-    alpha.performance.sector().then(res => {
+    this.props.alpha.performance.sector().then(res => {
       console.log(res);
       let lastRefreshed = res["Meta Data"]["Last Refreshed"];
       let displayTime = lastRefreshed.slice(0, lastRefreshed.indexOf('T') + 1)

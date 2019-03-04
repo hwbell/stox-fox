@@ -5,9 +5,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
 
 // components
+import AutoComplete from '../components/AutoComplete';
+import ExchangeGraph from '../components/ExchangeGraph';
 
-// modules
-import Autocomplete from 'react-autocomplete';
 // currencies info
 import physicalCurrencies from '../assets/data/physicalCurrencies';
 import cryptoCurrencies from '../assets/data/cryptoCurrencies';
@@ -24,7 +24,7 @@ const getObjFromCurrencyArray = (currencyArray) => {
     obj['code'] = code;
     return obj;
   })
-  console.log(currencyObjs)
+  //console.log(currencyObjs)
 
   // get rid of the first item which is just {currency: name}
   return currencyObjs.slice(1);
@@ -33,9 +33,6 @@ const getObjFromCurrencyArray = (currencyArray) => {
 const physicals = getObjFromCurrencyArray(physicalCurrencies);
 const cryptos = getObjFromCurrencyArray(cryptoCurrencies);
 
-// modules
-const alpha = require('alphavantage')({ key: process.env.alphaKey });
-
 class ForexPage extends Component {
 
   constructor(props) {
@@ -43,17 +40,20 @@ class ForexPage extends Component {
 
     this.chart = this.chart.bind(this);
     this.getForexData = this.getForexData.bind(this);
-
+    // this.onSelect = this.onSelect.bind(this);
     this.state = {
       data: {},
-      lastRefreshed: '',
-      fromValue: '',
-      toValue: ''
+      exchangeRate: '',
+      timeStamp: '',
+      fromCurrency: 'EUR',
+      toCurrency: 'USD',
+      graphFromCurrency: 'EUR',
+      graphToCurrency: 'USD'
     }
   }
 
   componentDidMount() {
-    // this.getForexData();
+    this.getForexData();
   }
 
   chart() {
@@ -61,81 +61,84 @@ class ForexPage extends Component {
   }
 
   getForexData() {
+    // console.log(this.state.fromCurrency, this.state.toCurrency)
     // get the data
-    alpha.performance.sector().then(res => {
-      console.log(res);
-      let lastRefreshed = res["Meta Data"]["Last Refreshed"];
-      let displayTime = lastRefreshed.slice(0, lastRefreshed.indexOf('T') + 1)
-
+    this.props.alpha.forex.rate(this.state.fromCurrency, this.state.toCurrency).then(res => {
+      // console.log(res);
+      let timeStamp = res["Realtime Currency Exchange Rate"]["6. Last Refreshed"];
+      let exchangeRate = res["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
       this.setState({
-        data: res,
-        lastRefreshed: displayTime
+        exchangeRate,
+        timeStamp,
       })
     });
+  }
+
+  renderAutoCompleteForms() {
+    // TODO - make elements for better reading below
+    return (
+      <div className="row" style={styles.searchHolder}>
+
+        <div className="col padding-0 scroll">
+          <AutoComplete
+            items={physicals}
+            value={this.state.fromCurrency}
+            onChange={e => this.setState({ fromCurrency: e.target.value })}
+            onSelect={(value) => {
+              this.setState({
+                fromCurrency: value,
+                graphFromCurrency: value
+              }, () => {
+                this.getForexData();
+              });
+            }}
+          />
+        </div>
+        <div className="col padding-0 ">
+          <i className="fa fa-random" style={styles.icon}></i>
+        </div>
+        <div className="col padding-0 scroll">
+          <AutoComplete
+            items={physicals}
+            value={this.state.toCurrency}
+            onChange={e => this.setState({ toCurrency: e.target.value })}
+            onSelect={(value) => {
+              console.log(value)
+              this.setState({
+                toCurrency: value,
+                graphToCurrency: value,
+              }, () => {
+                this.getForexData();
+              });
+            }}
+          />
+        </div>
+
+      </div>
+    )
+
   }
 
   render() {
 
     return (
-      <div className="row" style={styles.searchHolder}>
+      // use two AutoComplete inputs, one for each currency.
+      // see npm package react-autocomplete. I wrapped them 
+      // in a custom component to make it less confusing
 
-        <div className="col">
-          <div className="row padding-0">
-            <p className="col padding-0">from</p>
-            <Autocomplete
-              items={physicals}
+      <div className="container">
 
-              shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
-              getItemValue={item => item.label}
-              renderItem={(item, highlighted) =>
-                <div
-                  key={item.label}
-                  style={{
-                    borderRadius: 10,
-                    backgroundColor: highlighted ? '#eee' : 'white'
-                  }}
-                >
-                  {item.label}
-                </div>
-              }
-              menuStyle={styles.menuStyle}
-              value={this.state.fromValue}
-              onChange={e => this.setState({ fromValue: e.target.value })}
-              onSelect={value => this.setState({ fromValue: value })}
-            />
-          </div>
+        {this.renderAutoCompleteForms()}
+
+        <div className="">
+          <ExchangeGraph
+            alpha={this.props.alpha}
+            fromCurrency={this.state.graphFromCurrency}
+            toCurrency={this.state.graphToCurrency}
+            exchangeRate={this.state.exchangeRate}
+            timeStamp={this.state.timeStamp}
+          />
         </div>
-
-
-        <div className="col">
-
-          <div className="row padding-0">
-            <p className="col padding-0">to</p>
-            <Autocomplete
-              items={physicals}
-
-              shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
-              getItemValue={item => item.label}
-              renderItem={(item, highlighted) =>
-                <div
-                  key={item.label}
-                  style={{
-                    borderRadius: 10,
-                    backgroundColor: highlighted ? '#eee' : 'white'
-                  }}
-                >
-                  {item.label}
-                </div>
-              }
-              menuStyle={styles.menuStyle}
-              value={this.state.toValue}
-              onChange={e => this.setState({ toValue: e.target.value })}
-              onSelect={value => this.setState({ toValue: value })}
-            />
-          </div>
-        </div>
-
-
       </div>
     );
   }
@@ -143,21 +146,14 @@ class ForexPage extends Component {
 
 const styles = {
   searchHolder: {
-    width: '70%',
-    margin: 'auto auto'
+    width: '250px',
+    margin: '3vh auto'
   },
-  menuStyle: {
-    // borderRadius: '35px',
-
-    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-    background: 'rgba(255, 255, 255, 0.9)',
-    padding: '2px 0',
-    textAlign: 'left',
-    fontSize: 12,
-    height: '30vh',
-    width: '15vh',
-    overflow: 'auto',
-    maxHeight: '50%',
+  icon: {
+    // border: '1px solid black',
+    // margin: '2vh',
+    color: 'black',
+    fontSize: 20,
   }
 }
 

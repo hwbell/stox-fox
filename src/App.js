@@ -6,7 +6,8 @@ import './App.css';
 
 // components
 import Header from './components/Header';
-
+import Navigator from './components/Navigator';
+import Footer from './components/Footer';
 // pages
 import SectorPage from './pages/SectorPage';
 import ForexPage from './pages/ForexPage';
@@ -15,7 +16,8 @@ import StockPage from './pages/StockPage';
 
 // modules
 // var d3 = require("d3");
-// const alpha = require('alphavantage')({ key: 'FNJQW0Q6VHXXE9OS' });
+console.log(process.env.ALPHA_KEY)
+const alphaKey = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_KEY });
 
 
 class App extends Component {
@@ -38,12 +40,16 @@ class App extends Component {
     return (
       <div className="App">
 
-        <Header lastRefreshed={this.state.lastRefreshed} />
+        <Navigator lastRefreshed={this.state.lastRefreshed} />
 
-        {/* <SectorPage data={this.state.data}/> */}
+        {<StockPage />}
 
-        <ForexPage />
+        {/* <SectorPage alpha={alphaKey} data={this.state.data}/> */}
+
+        {/* <ForexPage alpha={alphaKey}/> */}
         
+
+        <Footer />
 
       </div>
     );

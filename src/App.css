@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
+/* Handle */
+.scroll ::-webkit-scrollbar {
+  background: white; 
+  border-radius: 35px;
+}
+
+.scroll ::-webkit-scrollbar-thumb {
+  background: black; 
+  border-radius: 5px;
+}
+
 body {
   font-family: Quicksand;
   background-size: 100%;
@@ -10,6 +21,28 @@ body {
   text-align: center;
 }
 
+.nav-link {
+  transition: ease all 0.3s;
+  float: right !important;
+}
+
+a:hover {
+  text-decoration: none;
+}
+.nav-link:hover {
+  -webkit-transform: scale(1.1) translateY(4px);
+  -ms-transform: scale(1.1) translateY(4px);
+  transform: scale(1.1) translateY(4px);
+  background-color: rgba(133, 26, 221, 0.1);
+  /* color: rgb(159, 26, 248); */
+}
+
+input {
+  text-align: center;
+}
+input:active, input:focus {
+  outline: none;
+}
 
 /* for no padding between bootstrap cols */
 .padding-0 {
@@ -18,7 +51,7 @@ body {
 }
 
 .orange-gradient {
-  background: rgb(248, 104, 47);
+  background: radial-gradient(#f86f45, #5c68f1);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
