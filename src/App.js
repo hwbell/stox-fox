@@ -5,9 +5,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 // components
-import Header from './components/Header';
 import Navigator from './components/Navigator';
 import Footer from './components/Footer';
+import DataSelector from './components/DataSelector';
+
 // pages
 import SectorPage from './pages/SectorPage';
 import ForexPage from './pages/ForexPage';
@@ -42,11 +43,13 @@ class App extends Component {
 
         <Navigator lastRefreshed={this.state.lastRefreshed} />
 
-        {<StockPage />}
+        {/* {<StockPage alpha={alphaKey}/>} */}
 
         {/* <SectorPage alpha={alphaKey} data={this.state.data}/> */}
 
         {/* <ForexPage alpha={alphaKey}/> */}
+
+        {/* <CryptoPage alpha={alphaKey}/> */}
         
 
         <Footer />

@@ -24,7 +24,7 @@ class AutoComplete extends Component {
     return (
       <div className="col scroll">
         {/* <p className="col padding-0">from</p> */}
-        <Autocomplete className=""
+        <Autocomplete className="auto-complete-form"
           inputProps={{ style: styles.searchInput }}
           items={this.props.items}
           shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}

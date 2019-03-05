@@ -33,7 +33,7 @@ class Header extends Component {
     const performanceProps = Object.keys(data);
 
     return (
-      <div className="container">
+      <div className="container" style={styles.container}>
 
       {/* each ListGroup contains a performance metric - real time performance 1 day performance,
       and the delta for each sector   */}
@@ -60,6 +60,9 @@ class Header extends Component {
 }
 
 const styles = {
+  container: {
+    marginBottom: '7vh'
+  },
   listTitle: {
     textAlign: 'left',
     fontWeight: 'bold'

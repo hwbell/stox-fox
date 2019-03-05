@@ -14,34 +14,38 @@
 body {
   font-family: Quicksand;
   background-size: 100%;
-  background: rgb(246, 215, 185)
+  background-image: linear-gradient(to right, rgb(255, 228, 198) , rgb(255, 240, 223));
 }
 
 .App {
   text-align: center;
 }
-
-.nav-link {
-  transition: ease all 0.3s;
-  float: right !important;
-}
-
 a:hover {
   text-decoration: none;
 }
+.nav-link {
+  transition: all 0.3s ease;
+  float: right !important;
+}
 .nav-link:hover {
-  -webkit-transform: scale(1.1) translateY(4px);
-  -ms-transform: scale(1.1) translateY(4px);
-  transform: scale(1.1) translateY(4px);
+  -webkit-transform: scale(1.05) translateY(2px);
+  -ms-transform: scale(1.05) translateY(2px);
+  transform: scale(1.05) translateY(2px);
   background-color: rgba(133, 26, 221, 0.1);
   /* color: rgb(159, 26, 248); */
 }
 
+
 input {
+  transition: all 0.3s ease;  
   text-align: center;
 }
+
 input:active, input:focus {
   outline: none;
+}
+input:hover {
+  background: grey;
 }
 
 /* for no padding between bootstrap cols */
@@ -50,18 +54,13 @@ input:active, input:focus {
   padding-left: 0;
 }
 
+/* the fox icon */
 .orange-gradient {
+  transition: all 0.8s linear;
   background: radial-gradient(#f86f45, #5c68f1);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.expand-button {
-  transition: all 0.3s ease;
-  background: rgb(199, 152, 108);
-  border: none;
-  margin: 0vh 4vh;
 }
 
 @keyframes App-logo-spin {

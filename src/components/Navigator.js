@@ -29,7 +29,7 @@ export default class Example extends React.Component {
 
           <div className="col-12 col-sm-6">
             <div className="row">
-              <p className="col" style={styles.title} >stoxfox</p>
+              <p className="col" style={styles.title} >$toxFox</p>
 
               <i className="col fab fa-wolf-pack-battalion orange-gradient" style={styles.icon}></i>
             </div>
@@ -65,7 +65,7 @@ const styles = {
   title: {
     // border: '1px solid black',
     margin: '1.5vh',
-    fontWeight: 'bold',
+    fontWeight: 'lighter',
     fontSize: 32,
     // margin: 'auto auto',
   },

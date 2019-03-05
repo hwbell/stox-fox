@@ -12,7 +12,7 @@ import ExchangeGraph from '../components/ExchangeGraph';
 import physicalCurrencies from '../assets/data/physicalCurrencies';
 import cryptoCurrencies from '../assets/data/cryptoCurrencies';
 
-// make into objects for the autocomplete tool
+// make into objects for the react-autocomplete module
 const getObjFromCurrencyArray = (currencyArray) => {
   // console.log(currencyArray)
   const currencyObjs = currencyArray.map((currency) => {
@@ -20,6 +20,7 @@ const getObjFromCurrencyArray = (currencyArray) => {
     let code = currency[0];
     let name = currency[1];
 
+    // this this the form specified by the module
     obj['label'] = `${name} (${code})`;
     obj['code'] = code;
     return obj;
@@ -95,7 +96,7 @@ class ForexPage extends Component {
           />
         </div>
         <div className="col padding-0 ">
-          <i className="fa fa-random" style={styles.icon}></i>
+          <i className="fas fa-random" style={styles.icon}></i>
         </div>
         <div className="col padding-0 scroll">
           <AutoComplete
@@ -153,7 +154,7 @@ const styles = {
     // border: '1px solid black',
     // margin: '2vh',
     color: 'black',
-    fontSize: 20,
+    fontSize: 15,
   }
 }
 

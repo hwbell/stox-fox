@@ -11,19 +11,18 @@ import DataSelector from './DataSelector';
 // import LineChart from 'react-linechart';
 import ReactChartkick, { LineChart, AreaChart } from 'react-chartkick'
 import Chart from 'chart.js'
+import { isNull } from 'util';
 
 ReactChartkick.addAdapter(Chart);
 
-class ExchangeGraph extends Component {
+class StockGraph extends Component {
 
   constructor(props) {
     super(props);
     // this.getForexCurrentData = this.getForexCurrentData.bind(this);
-    this.getForexDailyData = this.getForexDailyData.bind(this);
-    
+    this.getStockData = this.getStockData.bind(this);
+
     this.state = {
-      fromCurrency: this.props.fromCurrency,
-      toCurrency: this.props.toCurrency,
       type: 'daily',
       data: null,
       min: null,
@@ -32,57 +31,34 @@ class ExchangeGraph extends Component {
   }
 
   componentDidMount() {
-    this.getForexDailyData();
+    this.getStockData();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.fromCurrency !== this.props.fromCurrency) {
+    if (nextProps.stock !== this.props.stock) {
       this.setState({
-        fromCurrency: nextProps.fromCurrency
+        stock: nextProps.stock
       }, () => {
-        this.getForexDailyData();
+        this.getStockData();
       });
     }
-    if (nextProps.toCurrency !== this.props.toCurrency) {
-      this.setState({
-        toCurrency: nextProps.toCurrency
-      }, () => {
-        this.getForexDailyData();
-      });
-    }
+
   }
 
-  // unfortunately the npm package doesnt cover eveyrthing, so we just
-  // do a node-fetch in this component for each format - daily, week, month
 
-
-  getForexDailyData(type) {
+  getStockData(type) {
     // type will be 'intrady', 'daily', etc.
 
-    // default to daily and make all uppercase
-    if (!type) {
-      type = 'DAILY'
-    } else {
-      type = type.toUpperCase();
-    }
-
-    let url = `https://www.alphavantage.co/query?function=FX_${type}&from_symbol=${this.props.fromCurrency}&to_symbol=${this.props.toCurrency}&apikey=${process.env.REACT_APP_ALPHA_KEY}`
-
-    console.log(this.props.fromCurrency, this.props.toCurrency, type, url)
-
-    // get the data
-    fetch(url)
-      .then(res => res.json())
-      .then((res) => {
-        // console.log(res)
-        let data = this.formatData(res);
-        let time = new Date(res["Meta Data"]["5. Last Refreshed"]);
-        this.setState({
-          data,
-          type,
-          time
-        })
+    // get the data using the npm package
+    this.props.alpha.data.daily(this.props.stock).then(res => {
+      console.log(res);
+      let data = this.formatData(res);
+      let timeStamp = res["Meta Data"]["3. Last Refreshed"];
+      this.setState({
+        data,
+        timeStamp,
       })
+    });
 
   }
 
@@ -107,7 +83,13 @@ class ExchangeGraph extends Component {
 
     // now convert the date by date data to the form above
     timeSeriesKeys.forEach((key, i) => {
+
       let dataPoint = Number(timeSeries[key]["4. close"].slice(0, 4));
+      // set the current stockPrice to the first item in the array
+      if (i === 0) {
+        this.setState({ stockPrice: dataPoint })
+      }
+      // check for a new min / max
       if (dataPoint < min) {
         min = dataPoint;
       } else if (dataPoint > max) {
@@ -131,12 +113,10 @@ class ExchangeGraph extends Component {
 
         <div className="col" style={styles.infoHolder}>
           <p style={styles.info}>
-            {`One ${this.props.fromCurrency} is equal to `}
+            {`The current share price for ${this.props.stock} is `}
           </p>
-          <p style={styles.info}>
-            {` ${this.props.exchangeRate} ${this.props.toCurrency}`}
-          </p>
-          <p style={styles.info}>{this.props.timeStamp}</p>
+          <p style={styles.infoBold}>{`${this.state.stockPrice}$`}</p>
+          <p style={styles.time}>{this.state.timeStamp}</p>
         </div>
 
         {this.state.data &&
@@ -144,7 +124,7 @@ class ExchangeGraph extends Component {
             <DataSelector />
             <AreaChart width="100%" height="20vh"
               xtitle="time"
-              ytitle={this.props.toCurrency}
+              ytitle="price"
               style={styles.chart}
               min={this.state.min}
               max={this.state.max}
@@ -157,15 +137,22 @@ class ExchangeGraph extends Component {
 
 const styles = {
   fullContent: {
-
+    margin: '5vh'
   },
   infoHolder: {
 
   },
   info: {
-    margin: '2vh'
+    // margin: '2vh'
+    textAlign: 'left'
   },
-  
+  infoBold: {
+    fontWeight: 'bolder',
+    fontSize: 20
+  },
+  time: {
+    fontSize: '12px'
+  }
 }
 
-export default ExchangeGraph;
+export default StockGraph;

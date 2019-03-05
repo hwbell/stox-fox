@@ -6,10 +6,28 @@ import '../App.css';
 
 // components
 import AutoComplete from '../components/AutoComplete';
+import StockGraph from '../components/StockGraph';
 
+// data
 import Stocks from '../assets/data/nasdaq';
 
+// make into objects for the react-autocomplete module
+const getObjFromCurrencyArray = (currencyArray) => {
+  const currencyObjs = currencyArray.map((currency) => {
+    let obj = {};
 
+    // this this the form specified by the module
+    obj['label'] = currency;
+    obj['code'] = currency;
+    return obj;
+  });
+
+  return currencyObjs;
+}
+
+const stocks = getObjFromCurrencyArray(Stocks);
+
+// 
 export default class StockPage extends Component {
 
   constructor(props) {
@@ -20,7 +38,7 @@ export default class StockPage extends Component {
     // this.onSelect = this.onSelect.bind(this);
     this.state = {
       stock: 'MSFT',
-      graphStock: ''
+      graphStock: 'MSFT'
     }
   }
 
@@ -32,19 +50,19 @@ export default class StockPage extends Component {
     // chart(this.state.data)
   }
 
-  getStockData() {
-    // console.log(this.state.fromCurrency, this.state.toCurrency)
-    // get the data
-    this.props.alpha.forex.rate(this.state.fromCurrency, this.state.toCurrency).then(res => {
-      // console.log(res);
-      let timeStamp = res["Realtime Currency Exchange Rate"]["6. Last Refreshed"];
-      let exchangeRate = res["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-      this.setState({
-        exchangeRate,
-        timeStamp,
-      })
-    });
-  }
+  // getStockData() {
+  //   // console.log(this.state.fromCurrency, this.state.toCurrency)
+  //   // get the data
+  //   this.props.alpha.forex.rate(this.state.fromCurrency, this.state.toCurrency).then(res => {
+  //     // console.log(res);
+  //     let timeStamp = res["Realtime Currency Exchange Rate"]["6. Last Refreshed"];
+  //     let exchangeRate = res["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
+  //     this.setState({
+  //       exchangeRate,
+  //       timeStamp,
+  //     })
+  //   });
+  // }
 
   renderAutoCompleteForm() {
     // TODO - make elements for better reading below
@@ -53,7 +71,7 @@ export default class StockPage extends Component {
 
         <div className="col padding-0 scroll">
           <AutoComplete
-            items={Stocks}
+            items={stocks}
             value={this.state.stock}
             onChange={e => this.setState({ stock: e.target.value })}
             onSelect={(value) => {
@@ -85,7 +103,10 @@ export default class StockPage extends Component {
         {this.renderAutoCompleteForm()}
 
         <div className="">
-
+          <StockGraph
+            alpha={this.props.alpha}
+            stock={this.state.graphStock}
+          />
         </div>
       </div>
     );

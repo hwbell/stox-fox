@@ -24,9 +24,9 @@ export default class Footer extends React.Component {
   }
   render() {
     return (
-      <div className="row fixed-bottom">
+      <div className="row fixed-bottom" style={styles.container}>
         <div className="col-12">
-          <a target="_blank" href="https://alphavantage.co">
+          <a target="_blank" href="https://www.alphavantage.co">
             <p>
               powered by <strong>Alpha Vantage</strong>
             </p>
@@ -39,6 +39,7 @@ export default class Footer extends React.Component {
 
 const styles = {
   container: {
-    margin: '5vh'
+    paddingTop: '2vh',
+    backgroundColor: 'rgba( 255, 240, 223, 0.9)'
   }
 }
