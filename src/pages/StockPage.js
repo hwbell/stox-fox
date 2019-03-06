@@ -34,7 +34,7 @@ export default class StockPage extends Component {
     super(props);
 
     this.chart = this.chart.bind(this);
-    this.getStockData = this.getStockData.bind(this);
+    // this.getStockData = this.getStockData.bind(this);
     // this.onSelect = this.onSelect.bind(this);
     this.state = {
       stock: 'MSFT',

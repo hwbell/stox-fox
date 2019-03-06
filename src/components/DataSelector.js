@@ -7,12 +7,6 @@ import { Button } from 'reactstrap';
 
 // define heading categories
 // business entertainment general health science politics sports technology
-const dataTypes = [
-  'today',
-  'daily',
-  'month',
-  'year',
-]
 
 export default class DataSelector extends React.Component {
   constructor(props) {
@@ -24,11 +18,12 @@ export default class DataSelector extends React.Component {
   render() {
     return (
       <div className="text-center row" style={styles.container}>
-        {dataTypes.map( (type) => {
+        {this.props.dataTypes.map( (type, i) => {
           return (
-            <Button className="col padding-0"
+            <Button key={i} className="col padding-0"
+              style={styles.button}
               color="link"
-              onClick={this.props.onClick}>
+              onClick={() => this.props.handleClick(type)}>
               {type}
             </Button>
           )
@@ -40,7 +35,10 @@ export default class DataSelector extends React.Component {
 
 const styles = {
   container: {
-    width: '280px',
+    width: '80%',
     margin: '1vh auto'
+  },
+  button: {
+    fontSize: 16
   }
 }

@@ -128,7 +128,9 @@ class StockGraph extends Component {
               style={styles.chart}
               min={this.state.min}
               max={this.state.max}
-              data={this.state.data} />
+              data={this.state.data} 
+              points={false} 
+              />
           </div>}
       </div>
     );

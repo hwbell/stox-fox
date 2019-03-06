@@ -20,6 +20,8 @@ body {
 .App {
   text-align: center;
 }
+
+
 a:hover {
   text-decoration: none;
 }
@@ -41,11 +43,12 @@ input {
   text-align: center;
 }
 
+
 input:active, input:focus {
   outline: none;
 }
 input:hover {
-  background: grey;
+  background: light grey;
 }
 
 /* for no padding between bootstrap cols */

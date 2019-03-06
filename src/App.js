@@ -43,13 +43,13 @@ class App extends Component {
 
         <Navigator lastRefreshed={this.state.lastRefreshed} />
 
-        {/* {<StockPage alpha={alphaKey}/>} */}
+        {/* <StockPage alpha={alphaKey}/> */}
 
         {/* <SectorPage alpha={alphaKey} data={this.state.data}/> */}
 
         {/* <ForexPage alpha={alphaKey}/> */}
 
-        {/* <CryptoPage alpha={alphaKey}/> */}
+        <CryptoPage alpha={alphaKey}/>
         
 
         <Footer />
