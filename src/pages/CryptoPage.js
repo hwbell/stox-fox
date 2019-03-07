@@ -43,36 +43,113 @@ export default class ForexPage extends Component {
     this.getForexData = this.getForexData.bind(this);
     // this.onSelect = this.onSelect.bind(this);
     this.state = {
-      data: {},
+      data: null,
       exchangeRate: '',
       timeStamp: '',
       fromCurrency: 'BTC',
       toCurrency: 'USD',
-      graphFromCurrency: 'BTC',
-      graphToCurrency: 'USD'
     }
   }
 
   componentDidMount() {
-    this.getForexData();
+    this.getForexData('daily');
   }
 
   chart() {
     // chart(this.state.data)
   }
 
-  getForexData() {
-    // console.log(this.state.fromCurrency, this.state.toCurrency)
+  // unfortunately the npm package doesnt cover eveyrything, so we just
+  // do a node-fetch in this component 
+
+  getForexData(type) {
+    // type will be always be 'daily' in this component - there isnt an intraday call for
+    // crypto
+
+    let searchType;
+    // default to daily and make all uppercase for search
+    if (!type) {
+      searchType = 'DAILY';
+    } else {
+      searchType = type.toUpperCase();
+    }
+
+    let url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_${searchType}&symbol=${this.state.fromCurrency}&market=${this.state.toCurrency}&apikey=${process.env.REACT_APP_ALPHA_KEY}`
+
+    console.log(this.state.fromCurrency, this.state.toCurrency, searchType, url)
+
     // get the data
-    this.props.alpha.forex.rate(this.state.fromCurrency, this.state.toCurrency).then(res => {
-      // console.log(res);
-      let timeStamp = res["Realtime Currency Exchange Rate"]["6. Last Refreshed"];
-      let exchangeRate = res["Realtime Currency Exchange Rate"]["5. Exchange Rate"].slice(0,4);
-      this.setState({
-        exchangeRate,
-        timeStamp,
+    fetch(url)
+      .then(this.checkStatus)
+      .then(res => res.json())
+      .then((res) => {
+        // console.log(res)
+        let data = this.formatData(res);
+        let time = new Date(res["Meta Data"]["5. Last Refreshed"]);
+
+        // get the length of the data from the time series object, which is
+        // the 2nd key returned from Object.keys(res)
+        let resKeys = Object.keys(res);
+        let dataLength = Object.keys(res[resKeys[1]]).length;
+        console.log(`dataLenght inside cryptopage: ${dataLength}`)
+
+        this.setState({
+          fetchError: false,
+          dailyData: data, // the data that was fetched is named according to the selector,
+          // ex - 'intraday' selector is saved as this.state.intradayData
+          data, // the data that gets displayed, gets modified by buttons
+          type,
+          time,
+          dataLength
+        })
       })
-    });
+      .catch((err) => {
+        console.error(err)
+        this.setState({ fetchError: true })
+      });
+  }
+
+  formatData = (data) => {
+    // this formats the response data in the form specified by react-chartkick
+    console.log(data)
+    // see examples at https://chartkick.com/react documentation. data format is pretty simple
+
+    // key 0 will be metadata and key 1 will be the data list
+    // dates / times are they keys within the time series
+    let dataKeys = Object.keys(data);
+    let timeSeries = data[dataKeys[1]];
+    let timeSeriesKeys = Object.keys(timeSeries);
+
+    // initialize the object
+    let dataObj = {};
+
+    // initialize min and max for the data 
+    let min = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
+    let max = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
+    let exchangeRate = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
+    // now convert the date by date data to the form above
+
+    timeSeriesKeys.forEach((key, i) => {
+      // get the dataPoint
+      let dataPoint = Number(timeSeries[key]["4b. close (USD)"].slice(0, 4));
+
+      // check for the min and max
+      if (dataPoint < min) {
+        min = dataPoint;
+      } else if (dataPoint > max) {
+        max = dataPoint;
+      }
+      // add it to the master object
+      dataObj[key] = dataPoint;
+    })
+
+    this.setState({
+      min,
+      max,
+      exchangeRate
+    })
+    console.log(dataObj)
+    return dataObj;
   }
 
   renderAutoCompleteForms() {
@@ -89,7 +166,6 @@ export default class ForexPage extends Component {
             onSelect={(value) => {
               this.setState({
                 fromCurrency: value,
-                graphFromCurrency: value
               }, () => {
                 this.getForexData();
               });
@@ -101,18 +177,20 @@ export default class ForexPage extends Component {
         </div>
         <div className="col padding-0 scroll">
           <AutoComplete
-            items={[{label: 'United States Dollar', code: 'USD'}]}
+            items={[{ label: 'United States Dollar', code: 'USD' }]}
             value={this.state.toCurrency}
-            // onChange={e => this.setState({ toCurrency: e.target.value })}
-            // onSelect={(value) => {
-            //   console.log(value)
-            //   this.setState({
-            //     toCurrency: value,
-            //     graphToCurrency: value,
-            //   }, () => {
-            //     this.getForexData();
-            //   });
-            // }}
+          // Keeping this on USD at the moment as the others aren't actually reliable
+
+          // onChange={e => this.setState({ toCurrency: e.target.value })}
+          // onSelect={(value) => {
+          //   console.log(value)
+          //   this.setState({
+          //     toCurrency: value,
+          //     graphToCurrency: value,
+          //   }, () => {
+          //     this.getForexData();
+          //   });
+          // }}
           />
         </div>
 
@@ -132,15 +210,21 @@ export default class ForexPage extends Component {
 
         {this.renderAutoCompleteForms()}
 
-        <div className="">
-          <CryptoGraph
-            alpha={this.props.alpha}
-            fromCurrency={this.state.graphFromCurrency}
-            toCurrency={this.state.graphToCurrency}
-            exchangeRate={this.state.exchangeRate}
-            timeStamp={this.state.timeStamp}
-          />
-        </div>
+        {this.state.data &&
+          <div className="">
+            <CryptoGraph
+              data={this.state.data}
+              alpha={this.props.alpha}
+              fromCurrency={this.state.fromCurrency}
+              toCurrency={this.state.toCurrency}
+              exchangeRate={this.state.exchangeRate}
+              timeStamp={this.state.timeStamp}
+              min={this.state.min}
+              max={this.state.max}
+              dataLength={this.state.dataLength}
+              fetchError={this.state.fetchError}
+            />
+          </div>}
       </div>
     );
   }
