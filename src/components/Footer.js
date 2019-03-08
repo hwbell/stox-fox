@@ -25,12 +25,15 @@ export default class Footer extends React.Component {
   render() {
     return (
       <div className="row fixed-bottom" style={styles.container}>
+        
         <div className="col-12">
-          <a target="_blank" href="https://www.alphavantage.co">
-            <p>
-              powered by <strong>Alpha Vantage</strong>
-            </p>
-          </a>
+          <div style={styles.linkHolder}>
+            <a target="_blank" href="https://www.alphavantage.co">
+              <p>
+                powered by <strong>Alpha Vantage</strong>
+              </p>
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -40,6 +43,10 @@ export default class Footer extends React.Component {
 const styles = {
   container: {
     paddingTop: '2vh',
-    backgroundColor: 'rgba( 255, 240, 223, 0.9)'
+    paddingLeft: '4vh',
+    backgroundColor: 'rgba(245,245,245,0.8)',
+  },
+  linkHolder: {
+    backgroundColor: 'rgba(245,245,245,0.8)',
   }
 }

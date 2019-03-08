@@ -45,11 +45,11 @@ class App extends Component {
 
         {/* <StockPage alpha={alphaKey}/> */}
 
-        {/* <SectorPage alpha={alphaKey} data={this.state.data}/> */}
+        {/* <SectorPage alpha={alphaKey} /> */}
 
         {/* <ForexPage alpha={alphaKey}/> */}
 
-        <CryptoPage alpha={alphaKey}/>
+        {/* <CryptoPage alpha={alphaKey}/> */}
         
 
         <Footer />

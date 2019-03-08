@@ -14,7 +14,7 @@ export default class FetchErrorMessage extends React.Component {
       <div className="row " style={styles.container}>
         <div className="col-12">
           <p>
-            Sorry, there is no data available at this time
+            Sorry, there is no time series data available at this time
           </p>
           <p>
             

@@ -6,12 +6,11 @@ import '../App.css';
 
 // components
 import DataSelector from './DataSelector';
-
+import FetchErrorMessage from './FetchErrorMessage';
 // modules
 // import LineChart from 'react-linechart';
 import ReactChartkick, { LineChart, AreaChart } from 'react-chartkick'
 import Chart from 'chart.js'
-import { isNull } from 'util';
 
 ReactChartkick.addAdapter(Chart);
 
@@ -19,9 +18,7 @@ class StockGraph extends Component {
 
   constructor(props) {
     super(props);
-    // this.getForexCurrentData = this.getForexCurrentData.bind(this);
-    this.getStockData = this.getStockData.bind(this);
-
+    this.handleSelectorClick = this.handleSelectorClick.bind(this);
     this.state = {
       type: 'daily',
       data: null,
@@ -29,109 +26,138 @@ class StockGraph extends Component {
       max: null
     }
   }
-
-  componentDidMount() {
-    this.getStockData();
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.stock !== this.props.stock) {
+    if (nextProps.data !== this.props.data) {
       this.setState({
-        stock: nextProps.stock
-      }, () => {
-        this.getStockData();
+        data: nextProps.data
       });
     }
-
-  }
-
-
-  getStockData(type) {
-    // type will be 'intrady', 'daily', etc.
-
-    // get the data using the npm package
-    this.props.alpha.data.daily(this.props.stock).then(res => {
-      console.log(res);
-      let data = this.formatData(res);
-      let timeStamp = res["Meta Data"]["3. Last Refreshed"];
+    if (nextProps.intradayData !== this.props.intradayData) {
       this.setState({
-        data,
-        timeStamp,
-      })
-    });
-
+        intradayData: nextProps.intradayData
+      });
+    }
+    if (nextProps.dataLength !== this.props.dataLength) {
+      this.setState({
+        dataLength: nextProps.dataLength
+      });
+    }
+    if (nextProps.stock !== this.props.fromCurrency) {
+      this.setState({
+        stock: nextProps.stock
+      });
+    }
+    if (nextProps.stockPrice !== this.props.stockPrice) {
+      this.setState({
+        stockPrice: nextProps.stockPrice
+      });
+    }
+    if (nextProps.timeStamp !== this.props.stockPtimeStamprice) {
+      this.setState({
+        timeStamp: nextProps.timeStamp
+      });
+    }
   }
 
-  formatData = (data) => {
-    // this formats the response data in the form specified by react-chartkick
+  handleSelectorClick(selector) {
 
-    // see examples at https://chartkick.com/react documentation. data format is pretty simple
+    // if the selector is 'today' we'll change the data set to the intradayData
+    // everything else - 'week', 'month', 'year', - can be extracted from the dailyData
 
-    let dataKeys = Object.keys(data);
+    if (selector === 'today') {
 
-    // key 0 will be metadata and key 1 will be the data list
-    let timeSeries = data[dataKeys[1]];
-    // dates / times are they keys within the time series
-    let timeSeriesKeys = Object.keys(timeSeries);
+      this.setState({
+        fetchError: !this.props.intradayData,
+        data: this.props.intradayData
+      })
+      return; // skip the rest 
+    }
 
-    // initialize the object
-    let dataObj = {};
+    if (!this.props.dailyData) {
+      this.setState({ fetchError: true })
+    }
+    // get the current daily data and just section out what is needed 
+    // from the initial api call
+    let dailyData = JSON.parse(JSON.stringify(this.props.data));
+    console.log(selector)
+    // console.log(dailyData)
 
-    // initialize min and max for the data 
-    let min = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
-    let max = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+    // week, month, year, 5 year are all handled with the daily data 
+    // 5 years is the returned length of the 'daily' api call,
+    // so we'll make this the default
 
-    // now convert the date by date data to the form above
-    timeSeriesKeys.forEach((key, i) => {
+    // determine the data length based on the selector
+    let dataLength;
+    if (selector === 'week') {
+      dataLength = 7;
+    }
+    else if (selector === 'month') {
+      dataLength = 30;
+    }
+    else if (selector === 'year') {
+      dataLength = 364;
+    }
+    // default the data length to the full daily length, 5 year
+    else {
+      dataLength = Object.keys(dailyData).length;
+    }
 
-      let dataPoint = Number(timeSeries[key]["4. close"].slice(0, 4));
-      // set the current stockPrice to the first item in the array
-      if (i === 0) {
-        this.setState({ stockPrice: dataPoint })
-      }
-      // check for a new min / max
-      if (dataPoint < min) {
-        min = dataPoint;
-      } else if (dataPoint > max) {
-        max = dataPoint;
-      }
-      dataObj[key] = dataPoint;
-    })
+    // now section the data accordingly
+    // make a new object
+    let newData = {};
+    let dateKeys = Object.keys(dailyData);
+
+    // loop through the daily data using the interval and assign new data
+    for (let i = 0; i < dataLength; i++) {
+      let key = dateKeys[i];
+      newData[key] = dailyData[key];
+    }
 
     this.setState({
-      min,
-      max
+      data: newData,
+      dataLength
     })
-    console.log(dataObj)
-    return dataObj;
+
+    console.log('clicking')
+    console.log(newData)
+
   }
 
   render() {
 
     return (
-      <div className="row" style={styles.fullContent}>
+      <div className="" style={styles.fullContent}>
+        {this.props.stockPrice &&
+          <div className="" style={styles.infoHolder}>
+            <p className="" style={styles.infoBold}>{`${this.props.stockPrice} usd`}</p>
 
-        <div className="col" style={styles.infoHolder}>
-          <p style={styles.info}>
-            {`The current share price for ${this.props.stock} is `}
-          </p>
-          <p style={styles.infoBold}>{`${this.state.stockPrice}$`}</p>
-          <p style={styles.time}>{this.state.timeStamp}</p>
-        </div>
-
-        {this.state.data &&
-          <div className="col" style={styles.graphHolder}>
-            <DataSelector />
-            <AreaChart width="100%" height="20vh"
-              xtitle="time"
-              ytitle="price"
-              style={styles.chart}
-              min={this.state.min}
-              max={this.state.max}
-              data={this.state.data} 
-              points={false} 
-              />
+            <p style={styles.time}>{this.props.timeStamp}</p>
           </div>}
+
+
+          <div className="col-12" style={styles.graphHolder}>
+            <DataSelector
+              handleClick={this.handleSelectorClick}
+              dataLength={this.props.dataLength}
+            />
+            {!this.props.fetchError ?
+              <div>
+
+                <AreaChart width="100%" height="200px"
+                  // xtitle="time"
+
+                  style={styles.chart}
+                  min={this.props.min}
+                  max={this.props.max}
+                  data={this.state.data}
+                  points={false}
+                />
+              </div>
+              :
+              <FetchErrorMessage />}
+
+          </div>
+
       </div>
     );
   }
@@ -139,14 +165,10 @@ class StockGraph extends Component {
 
 const styles = {
   fullContent: {
-    margin: '5vh'
+    margin: '0vw'
   },
   infoHolder: {
-
-  },
-  info: {
-    // margin: '2vh'
-    textAlign: 'left'
+    marginLeft: '30px'
   },
   infoBold: {
     fontWeight: 'bolder',

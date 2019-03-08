@@ -28,10 +28,16 @@ export default class Example extends React.Component {
         <div className="row">
 
           <div className="col-12 col-sm-6">
-            <div className="row">
-              <p className="col" style={styles.title} >$toxFox</p>
+            <div className="text-center row">
 
-              <i className="col fab fa-wolf-pack-battalion orange-gradient" style={styles.icon}></i>
+              <div className="col">
+                <p className="" style={styles.title} >$toxFox</p>
+              </div>
+
+              <div className="col">
+                <i className="fab fa-wolf-pack-battalion orange-gradient" style={styles.icon}></i>
+              </div>
+
             </div>
           </div>
 
@@ -42,7 +48,7 @@ export default class Example extends React.Component {
                   return (
                     <Button key={i}
                       color="link"
-                      className="col nav-link"
+                      className="col padding-0 nav-link"
                       style={styles.link}
                       onClick={() => this.props.onClick(heading)}>{heading}</Button>
                   )
@@ -52,6 +58,7 @@ export default class Example extends React.Component {
           </div>
 
         </div>
+        <hr />
       </div>
     );
   }
@@ -59,18 +66,14 @@ export default class Example extends React.Component {
 
 const styles = {
   container: {
-    // margin: '3vh',
     marginTop: '2vh'
   },
   title: {
-    // border: '1px solid black',
-    margin: '1.5vh',
+    marginTop: '1.5vh',
     fontWeight: 'lighter',
     fontSize: 32,
-    // margin: 'auto auto',
   },
   icon: {
-    // border: '1px solid black',
     margin: '2vh',
     fontSize: 40,
   },
@@ -82,6 +85,5 @@ const styles = {
     fontFamily: 'inherit',
     fontWeight: '650',
     fontSize: 'calc(0.4vw + 16px)',
-    color: '#4527A0'
   }
 }

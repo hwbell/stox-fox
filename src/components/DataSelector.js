@@ -10,7 +10,7 @@ import { Button } from 'reactstrap';
 
 // these will be the for the full range of the data, if it is available
 // for many, it isnt. so chop off the ones we dont need below
-let fullSelectors = ['week', 'month', 'year', 'full'];
+let fullSelectors = ['today', 'week', 'month', 'year', 'full'];
 
 export default class DataSelector extends React.Component {
   constructor(props) {
@@ -41,14 +41,19 @@ export default class DataSelector extends React.Component {
     let length = this.props.dataLength;
     console.log('formatting selectors')
     console.log(`dataLength: ${length}`)
-
+    let selectors;
     if (length < 30) {
-      this.setState({ selectors: ['week', 'full'] });
+      selectors = ['today', 'week', 'full']
     } else if (length < 365) {
-      this.setState({ selectors: ['week', 'month', 'full'] });
+      selectors = ['today', 'week', 'month', 'full']
     } else {
-      this.setState({selectors: fullSelectors}); // do nothing
+      selectors = fullSelectors; 
     }
+
+    if (this.props.noIntraday) {
+      selectors = selectors.slice(1);
+    }
+    this.setState({selectors});
 
   }
 

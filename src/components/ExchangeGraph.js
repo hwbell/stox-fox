@@ -31,59 +31,40 @@ class ExchangeGraph extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getForexDailyData();
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fromCurrency !== this.props.fromCurrency) {
       this.setState({
         fromCurrency: nextProps.fromCurrency
-      }, () => {
-        this.getForexDailyData();
       });
     }
     if (nextProps.toCurrency !== this.props.toCurrency) {
       this.setState({
         toCurrency: nextProps.toCurrency
-      }, () => {
-        this.getForexDailyData();
       });
     }
-  }
-
-  // unfortunately the npm package doesnt cover eveyrthing, so we just
-  // do a node-fetch in this component for each format - daily, week, month
-
-
-  getForexDailyData(type) {
-    // type will be 'intrady', 'daily', etc.
-
-    // default to daily and make all uppercase
-    if (!type) {
-      type = 'DAILY'
-    } else {
-      type = type.toUpperCase();
+    if (nextProps.data !== this.props.data) {
+      this.setState({
+        data: nextProps.data
+      });
     }
-
-    let url = `https://www.alphavantage.co/query?function=FX_${type}&from_symbol=${this.props.fromCurrency}&to_symbol=${this.props.toCurrency}&apikey=${process.env.REACT_APP_ALPHA_KEY}`
-
-    console.log(this.props.fromCurrency, this.props.toCurrency, type, url)
-
-    // get the data
-    fetch(url)
-      .then(res => res.json())
-      .then((res) => {
-        // console.log(res)
-        let data = this.formatData(res);
-        let time = new Date(res["Meta Data"]["5. Last Refreshed"]);
-        this.setState({
-          data,
-          type,
-          time
-        })
-      })
-
+    if (nextProps.intradayData !== this.props.intradayData) {
+      this.setState({
+        intradayData: nextProps.intradayData
+      });
+    }
+    if (nextProps.dataLength !== this.props.dataLength) {
+      this.setState({
+        dataLength: nextProps.dataLength
+      });
+    }
+    
+    if (nextProps.timeStamp !== this.props.stockPtimeStamprice) {
+      this.setState({
+        timeStamp: nextProps.timeStamp
+      });
+    }
+    
   }
 
   formatData = (data) => {

@@ -36,7 +36,17 @@ export default class CryptoGraph extends Component {
         data: nextProps.data
       });
     }
-    if (nextProps.dataLength !== this.props.data) {
+    if (nextProps.dailyData !== this.props.dailyData) {
+      this.setState({
+        dailyData: nextProps.dailyData
+      });
+    }
+    if (nextProps.timeStamp !== this.props.timeStamp) {
+      this.setState({
+        timeStamp: nextProps.timeStamp
+      });
+    }
+    if (nextProps.dataLength !== this.props.dataLength) {
       this.setState({
         dataLength: nextProps.dataLength
       });
@@ -107,9 +117,9 @@ export default class CryptoGraph extends Component {
   render() {
 
     return (
-      <div className="row" style={styles.fullContent}>
+      <div className="" style={styles.fullContent}>
 
-        <div className="col-12 col-sm-4" style={styles.infoHolder}>
+        { this.props.data && <div className="col-12" style={styles.infoHolder}>
           <p style={styles.info}>
             {`1 ${this.props.fromCurrency} is equal to `}
           </p>
@@ -117,14 +127,15 @@ export default class CryptoGraph extends Component {
             {` ${this.props.exchangeRate} ${this.props.toCurrency}`}
           </p>
           <p style={styles.time}>{this.props.timeStamp}</p>
-        </div>
+        </div>}
 
         {this.state.data &&
-          <div className="col-12 col-sm-8" style={styles.graphHolder}>
+          <div className="col-12" style={styles.graphHolder}>
 
             {!this.props.fetchError ?
               <div>
                 <DataSelector
+                  noIntraday={true}
                   handleClick={this.handleSelectorClick}
                   dataLength={this.props.dataLength}
                 />
@@ -149,16 +160,10 @@ export default class CryptoGraph extends Component {
 
 const styles = {
   fullContent: {
-    marginTop: '5vh'
-  },
-  graphHolder: {
-    // backgroundColor: 'whitesmoke'
+    margin: '0vw'
   },
   infoHolder: {
-
-  },
-  info: {
-    margin: '2vh'
+    marginLeft: '30px'
   },
   infoBold: {
     fontWeight: 'bolder',

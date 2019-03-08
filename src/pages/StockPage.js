@@ -43,26 +43,103 @@ export default class StockPage extends Component {
   }
 
   componentDidMount() {
-    // this.getForexData();
+    this.getStockData();
   }
 
   chart() {
     // chart(this.state.data)
   }
 
-  // getStockData() {
-  //   // console.log(this.state.fromCurrency, this.state.toCurrency)
-  //   // get the data
-  //   this.props.alpha.forex.rate(this.state.fromCurrency, this.state.toCurrency).then(res => {
-  //     // console.log(res);
-  //     let timeStamp = res["Realtime Currency Exchange Rate"]["6. Last Refreshed"];
-  //     let exchangeRate = res["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-  //     this.setState({
-  //       exchangeRate,
-  //       timeStamp,
-  //     })
-  //   });
-  // }
+  getStockData() {
+    // type will be 'intrady', 'daily', etc.
+
+    // get the data using the npm package
+    this.props.alpha.data.daily(this.state.stock)
+      .then(res => {
+        console.log(res);
+        let data = this.formatData(res);
+        let timeStamp = res["Meta Data"]["3. Last Refreshed"];
+
+        // get the length of the data from the time series object, which is
+        // the 2nd key returned from Object.keys(res)
+        let resKeys = Object.keys(res);
+        let dataLength = Object.keys(res[resKeys[1]]).length;
+        console.log(`dataLength inside cryptopage: ${dataLength}`)
+        this.setState({
+          data,
+          timeStamp,
+          dataLength
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+        this.setState({ fetchError: true })
+      });
+
+
+    // add an intraday call to the api, but wait 5 seconds first
+    setTimeout(() => {
+      this.props.alpha.data.intraday(this.state.stock).then(res => {
+        console.log(res);
+        let intradayData = this.formatData(res);
+        let intradayTimeStamp = res["Meta Data"]["3. Last Refreshed"];
+
+        this.setState({
+          intradayTimeStamp,
+          intradayData,
+        });
+
+      })
+      .catch((err) => {
+        console.error(err)
+      });
+    }, 5 * 1000)
+
+
+  }
+
+  formatData = (data) => {
+    // this formats the response data in the form specified by react-chartkick
+
+    // see examples at https://chartkick.com/react documentation. data format is pretty simple
+
+    let dataKeys = Object.keys(data);
+
+    // key 0 will be metadata and key 1 will be the data list
+    let timeSeries = data[dataKeys[1]];
+    // dates / times are they keys within the time series
+    let timeSeriesKeys = Object.keys(timeSeries);
+
+    // initialize the object
+    let dataObj = {};
+
+    // initialize min and max for the data 
+    let min = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+    let max = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+    let stockPrice = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+
+    // now convert the date by date data to the form above
+    timeSeriesKeys.forEach((key, i) => {
+
+      let dataPoint = Number(timeSeries[key]["4. close"].slice(0, 4));
+
+      // check for a new min / max
+      if (dataPoint < min) {
+        min = dataPoint;
+      } else if (dataPoint > max) {
+        max = dataPoint;
+      }
+      dataObj[key] = dataPoint;
+    })
+
+    this.setState({
+      stockPrice,
+      min,
+      max
+    })
+    console.log(dataObj)
+    return dataObj;
+  }
 
   renderAutoCompleteForm() {
     // TODO - make elements for better reading below
@@ -80,7 +157,7 @@ export default class StockPage extends Component {
                 stock: value,
                 graphStock: value
               }, () => {
-                // this.getStockData();
+                this.getStockData();
               });
             }}
           />
@@ -102,12 +179,18 @@ export default class StockPage extends Component {
 
         {this.renderAutoCompleteForm()}
 
-        <div className="">
-          <StockGraph
-            alpha={this.props.alpha}
-            stock={this.state.graphStock}
-          />
-        </div>
+        <StockGraph
+          alpha={this.props.alpha}
+          stock={this.state.graphStock}
+          stockPrice={this.state.stockPrice}
+          data={this.state.data}
+          timeStamp={this.state.timeStamp}
+          dataLength={this.state.dataLength}
+          intradayTimeStamp={this.state.intradayTimeStamp}
+          intradayData={this.state.intradayData}
+          fetchError={this.state.fetchError}
+        />
+
       </div>
     );
   }
@@ -115,14 +198,7 @@ export default class StockPage extends Component {
 
 const styles = {
   searchHolder: {
-    width: '250px',
-    margin: '3vh auto'
-  },
-  icon: {
-    // border: '1px solid black',
-    // margin: '2vh',
-    color: 'black',
-    fontSize: 20,
+    margin: '20px 0px'
   }
 }
 

@@ -80,13 +80,12 @@ export default class ForexPage extends Component {
 
     // get the data
     fetch(url)
-      .then(this.checkStatus)
       .then(res => res.json())
       .then((res) => {
         // console.log(res)
         let data = this.formatData(res);
-        let time = new Date(res["Meta Data"]["5. Last Refreshed"]);
-
+        let timeStamp = res["Meta Data"]["6. Last Refreshed"];
+        console.log(`timeStamp: ${timeStamp}`)
         // get the length of the data from the time series object, which is
         // the 2nd key returned from Object.keys(res)
         let resKeys = Object.keys(res);
@@ -99,7 +98,7 @@ export default class ForexPage extends Component {
           // ex - 'intraday' selector is saved as this.state.intradayData
           data, // the data that gets displayed, gets modified by buttons
           type,
-          time,
+          timeStamp,
           dataLength
         })
       })
@@ -155,9 +154,9 @@ export default class ForexPage extends Component {
   renderAutoCompleteForms() {
     // TODO - make elements for better reading below
     return (
-      <div className="row" style={styles.searchHolder}>
+      <div className="text-center row" style={styles.searchHolder}>
 
-        <div className="col padding-0 scroll">
+        <div className="col padding-0 scroll autocomplete">
           <AutoComplete
             items={cryptos}
             open={false}
@@ -237,7 +236,7 @@ const styles = {
   },
   icon: {
     // border: '1px solid black',
-    // margin: '2vh',
+    marginTop: '1vh',
     color: 'black',
     fontSize: 15,
   }

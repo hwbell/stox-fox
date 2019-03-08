@@ -54,7 +54,9 @@ const styles = {
   searchInput: {
     width: '10vh',
     border: 'none',
-    borderRadius: 10
+    borderRadius: 10,
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   menuStyle: {
     zIndex: 1,
