@@ -24,7 +24,7 @@ export default class Footer extends React.Component {
   }
   render() {
     return (
-      <div className="row fixed-bottom" style={styles.container}>
+      <div className="text-center row fixed-bottom" style={styles.container}>
         
         <div className="col-12">
           <div style={styles.linkHolder}>
@@ -35,6 +35,7 @@ export default class Footer extends React.Component {
             </a>
           </div>
         </div>
+        
       </div>
     );
   }
@@ -44,9 +45,7 @@ const styles = {
   container: {
     paddingTop: '2vh',
     paddingLeft: '4vh',
-    backgroundColor: 'rgba(245,245,245,0.8)',
+    backgroundColor: 'rgba(239, 219, 255, 0.5)',
   },
-  linkHolder: {
-    backgroundColor: 'rgba(245,245,245,0.8)',
-  }
+  
 }

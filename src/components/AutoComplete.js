@@ -52,6 +52,7 @@ class AutoComplete extends Component {
 
 const styles = {
   searchInput: {
+    background: 'none',
     width: '10vh',
     border: 'none',
     borderRadius: 10,

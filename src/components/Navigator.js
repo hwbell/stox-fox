@@ -4,14 +4,27 @@ import '../App.css';
 
 // components 
 import { Button } from 'reactstrap';
+import { NavLink } from "react-router-dom";
 
 // define heading categories
 // business entertainment general health science politics sports technology
 const headings = [
-  'stock',
-  'forex',
-  'crypto',
-  'sector',
+  {
+    text: 'stock',
+    route: '/'
+  },
+  {
+    text: 'forex',
+    route: '/forex/'
+  },
+  {
+    text: 'crypto',
+    route: '/crypto/'
+  },
+  {
+    text: 'sector',
+    route: '/sector/'
+  },
 
 ]
 
@@ -42,15 +55,16 @@ export default class Example extends React.Component {
           </div>
 
           <div className="col-12 col-sm-6" style={styles.linkHolder}>
-            <div className="row">
+            <div className="text-center row">
               {
                 headings.map((heading, i) => {
                   return (
-                    <Button key={i}
-                      color="link"
-                      className="col padding-0 nav-link"
-                      style={styles.link}
-                      onClick={() => this.props.onClick(heading)}>{heading}</Button>
+
+                    <NavLink key={i} className="col padding-0 nav-link" style={styles.link}
+                      to={heading.route}>
+                      <p>{heading.text}</p>
+                    </NavLink>
+                    
                   )
                 })
               }

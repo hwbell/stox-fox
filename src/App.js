@@ -4,16 +4,32 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
-// components
-import Navigator from './components/Navigator';
-import Footer from './components/Footer';
-import DataSelector from './components/DataSelector';
+// routing
+import Router from 'react-router-dom/BrowserRouter';
+import { AnimatedSwitch } from 'react-router-transition';
+import Route from 'react-router-dom/Route';
+import { Switch } from 'react-router-dom';
+import posed, { PoseGroup } from 'react-pose';
 
 // pages
 import SectorPage from './pages/SectorPage';
 import ForexPage from './pages/ForexPage';
 import CryptoPage from './pages/CryptoPage';
 import StockPage from './pages/StockPage';
+
+// components
+import Navigator from './components/Navigator';
+import Footer from './components/Footer';
+import DataSelector from './components/DataSelector';
+
+const RoutesContainer = posed.div({
+  enter: {
+    opacity: 1,
+    delay: 300,
+    beforeChildren: true
+  },
+  exit: { opacity: 0 }
+});
 
 // modules
 // var d3 = require("d3");
@@ -39,22 +55,31 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <Router>
+        <div>
+          <Navigator />
+          {/* <Route render={({ location }) => (
+            // pose is kind of awesome! and super easy for a simple 
+            // implementation like this
+            <PoseGroup>
 
-        <Navigator lastRefreshed={this.state.lastRefreshed} />
+              <RoutesContainer key={location.pathname}>
 
-        {/* <StockPage alpha={alphaKey}/> */}
+                <Switch location={location}>
+                  <Route exact path="/" render={(props) => <StockPage {...props} alpha={alphaKey} />} />
+                  <Route path="/forex/" render={(props) => <ForexPage {...props} alpha={alphaKey} />} />
+                  <Route path="/crypto/" render={(props) => <CryptoPage {...props} alpha={alphaKey} />} />
+                  <Route path="/sector/" render={(props) => <SectorPage {...props} alpha={alphaKey} />} />
+                </Switch>
 
-        {/* <SectorPage alpha={alphaKey} /> */}
+              </RoutesContainer>
 
-        {/* <ForexPage alpha={alphaKey}/> */}
+            </PoseGroup>
 
-        {/* <CryptoPage alpha={alphaKey}/> */}
-        
-
-        <Footer />
-
-      </div>
+          )} /> */}
+          <Footer/>
+        </div>
+      </Router>
     );
   }
 }

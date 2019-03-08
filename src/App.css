@@ -8,16 +8,18 @@
 }
 
 .scroll ::-webkit-scrollbar-thumb {
-  background: black; 
+  background: rgba(0, 49, 211, 0.418); 
   border-radius: 5px;
 }
 
 body {
   font-family: Montserrat;
   background-size: 100%;
-  background:linear-gradient(to right, rgba(239, 219, 255, 0.5), rgb(250,250,250));
+  background: linear-gradient(to right, rgba(255, 233, 219, 0.5), rgb(255, 255, 255));
 }
-
+.fixed-bottom {
+  background:linear-gradient(to right, rgba(253, 209, 255, 0.5), rgb(255, 255, 255));
+}
 
 a:hover {
   text-decoration: none;
@@ -44,7 +46,7 @@ a:hover {
 }
 
 input {
-  background-color: whitesmoke;
+  background-color: rgba(248, 240, 255, 0.5);
   transition: all 0.3s ease;  
   text-align: center;
 }
@@ -53,7 +55,8 @@ input:active, input:focus {
   outline: none;
 }
 input:hover {
-  background-color: rgba(133, 26, 221, 0.2);
+  color: rgb(133, 26, 221);
+  cursor: pointer;
 }
 
 /* buttons for changing time series data */
@@ -65,7 +68,7 @@ input:hover {
 }
 .data-selector:hover {
   text-decoration: none;
-  background-color: rgba(133, 26, 221, 0.2);;
+  color: rgb(133, 26, 221);
 }
 .data-selector:active, .data-selector:focus {
   text-decoration: none;
