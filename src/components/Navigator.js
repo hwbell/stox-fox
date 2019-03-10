@@ -22,7 +22,7 @@ const headings = [
     route: '/crypto/'
   },
   {
-    text: 'sector',
+    text: 'sectors',
     route: '/sector/'
   },
 
@@ -84,7 +84,7 @@ const styles = {
   },
   title: {
     marginTop: '1.5vh',
-    fontWeight: 'lighter',
+    // fontWeight: 'lighter',
     fontSize: 32,
   },
   icon: {
@@ -97,7 +97,7 @@ const styles = {
   link: {
     padding: '1vh',
     fontFamily: 'inherit',
-    fontWeight: '650',
+    fontWeight: '600',
     fontSize: 'calc(0.4vw + 16px)',
   }
 }

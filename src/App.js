@@ -58,7 +58,7 @@ class App extends Component {
       <Router>
         <div>
           <Navigator />
-          {/* <Route render={({ location }) => (
+          <Route render={({ location }) => (
             // pose is kind of awesome! and super easy for a simple 
             // implementation like this
             <PoseGroup>
@@ -76,7 +76,7 @@ class App extends Component {
 
             </PoseGroup>
 
-          )} /> */}
+          )} />
           <Footer/>
         </div>
       </Router>

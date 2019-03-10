@@ -66,10 +66,10 @@ class SectorListItem extends Component {
           
           return (
             <div key={i} className="">
-              <div className="row">
+              <div className="row" style={styles.info}>
                 {/* here we show each sector and its change */}
                 <p style={styles.sector}>{`${sector}:`}</p>
-                <p style={{ margin: '1vh', color: deltaColor }}>{delta}</p>
+                <p style={{ margin: '1vw 0.5vw', color: deltaColor }}>{delta}</p>
               </div>
 
               <Progress max={maxOfData+1}
@@ -95,12 +95,14 @@ const styles = {
     // textAlign: 'left',
     fontWeight: 'bold'
   },
-
+  info: {
+    padding: '1.5vw'
+  },
   sector: {
-    margin: '1vh',
+    margin: '1vw',
     fontWeight: 550
   },
-
+  
 }
 
 export default SectorListItem;

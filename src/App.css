@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import url('https://fonts.googleapis.com/css?family=Lato');
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 
 /* Handle */
 .scroll ::-webkit-scrollbar {
   background: white; 
-  border-radius: 35px;
+  /* border-radius: 35px; */
 }
 
 .scroll ::-webkit-scrollbar-thumb {
@@ -13,12 +14,13 @@
 }
 
 body {
-  font-family: Montserrat;
+  font-family: Josefin Sans;
+  font-weight: lighter;
   background-size: 100%;
-  background: linear-gradient(to right, rgba(255, 233, 219, 0.5), rgb(255, 255, 255));
+  background: linear-gradient(to right, rgba(255, 227, 219, 0.5), rgb(255, 255, 255));
 }
 .fixed-bottom {
-  background:linear-gradient(to right, rgba(253, 209, 255, 0.5), rgb(255, 255, 255));
+  background:linear-gradient(to right, rgba(251, 215, 253, 0.5), rgb(255, 255, 255));
 }
 
 a:hover {
@@ -46,7 +48,7 @@ a:hover {
 }
 
 input {
-  background-color: rgba(248, 240, 255, 0.5);
+  /* background-color: rgba(248, 240, 255, 0.5); */
   transition: all 0.3s ease;  
   text-align: center;
 }

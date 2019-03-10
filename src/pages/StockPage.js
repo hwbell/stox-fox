@@ -90,9 +90,9 @@ export default class StockPage extends Component {
         });
 
       })
-      .catch((err) => {
-        console.error(err)
-      });
+        .catch((err) => {
+          console.error(err)
+        });
     }, 5 * 1000)
 
 
@@ -162,6 +162,7 @@ export default class StockPage extends Component {
             }}
           />
         </div>
+        
 
       </div>
     )

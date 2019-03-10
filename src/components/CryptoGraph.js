@@ -30,6 +30,7 @@ export default class CryptoGraph extends Component {
     console.log(`data length inside cryptograph: ${this.props.dataLength}` )
   }
 
+  // there must be better way for this...
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
       this.setState({
@@ -123,12 +124,14 @@ export default class CryptoGraph extends Component {
           <p style={styles.info}>
             {`1 ${this.props.fromCurrency} is equal to `}
           </p>
-          <p style={styles.infoBold}>
+          {/* dont show the rate if the fetch doesn't work */}
+          {!this.props.fetchError && <p style={styles.infoBold}>
             {` ${this.props.exchangeRate} ${this.props.toCurrency}`}
-          </p>
+          </p>}
           <p style={styles.time}>{this.props.timeStamp}</p>
         </div>}
 
+        {/* also don't show any data if it doesn't exist yet */}
         {this.state.data &&
           <div className="col-12" style={styles.graphHolder}>
 

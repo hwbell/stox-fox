@@ -45,7 +45,7 @@ const styles = {
   container: {
     paddingTop: '2vh',
     paddingLeft: '4vh',
-    backgroundColor: 'rgba(239, 219, 255, 0.5)',
+    // backgroundColor: 'rgba(239, 219, 255, 0.5)',
   },
   
 }
