@@ -22,7 +22,8 @@ export default class CryptoGraph extends Component {
     this.handleSelectorClick = this.handleSelectorClick.bind(this);
 
     this.state = {
-      data: this.props.data
+      data: this.props.data,
+      minMaxChanged: false
     }
   }
 
@@ -37,6 +38,8 @@ export default class CryptoGraph extends Component {
     if (nextProps.data !== this.props.data) {
       this.setState({
         data: nextProps.data
+      }, () => {
+        this.handleSelectorClick('full');
       });
     }
     if (nextProps.dailyData !== this.props.dailyData) {
@@ -130,7 +133,8 @@ export default class CryptoGraph extends Component {
       data: newData,
       dataLength,
       min,
-      max
+      max,
+      minMaxChanged: true
     })
 
     console.log('clicking')
@@ -167,8 +171,8 @@ export default class CryptoGraph extends Component {
                 />
                 <AreaChart width="100%" height="200px"
                   // xtitle="time"
-                  min={this.state.min}
-                  max={this.state.max}
+                  min={this.state.minMaxChanged ? this.state.min: null}
+                  max={this.state.minMaxChanged ? this.state.max: null}
                   data={this.state.data}
                   points={false}
                 />

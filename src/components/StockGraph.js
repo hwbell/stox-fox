@@ -30,7 +30,10 @@ class StockGraph extends Component {
     if (nextProps.data !== this.props.data) {
       this.setState({
         data: nextProps.data
+      }, () => {
+        this.handleSelectorClick('full');
       });
+      
     }
     if (nextProps.intradayData !== this.props.intradayData) {
       this.setState({
@@ -52,7 +55,7 @@ class StockGraph extends Component {
         stockPrice: nextProps.stockPrice
       });
     }
-    if (nextProps.timeStamp !== this.props.stockPtimeStamprice) {
+    if (nextProps.timeStamp !== this.props.timeStamp) {
       this.setState({
         timeStamp: nextProps.timeStamp
       });
@@ -177,6 +180,7 @@ class StockGraph extends Component {
 
               <AreaChart width="100%" height="200px"
                 // xtitle="time"
+                // discrete={true}
                 min={this.state.min}
                 max={this.state.max}
                 style={styles.chart}

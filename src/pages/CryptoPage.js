@@ -220,8 +220,8 @@ export default class ForexPage extends Component {
               toCurrency={this.state.toCurrency}
               exchangeRate={this.state.exchangeRate}
               timeStamp={this.state.timeStamp}
-              min={this.state.min}
-              max={this.state.max}
+              min={null}
+              max={null}
               dataLength={this.state.dataLength}
               fetchError={this.state.fetchError}
             />
