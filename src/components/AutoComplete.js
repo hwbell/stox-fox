@@ -22,22 +22,21 @@ class AutoComplete extends Component {
 
   render() {
     return (
-      <div className="col scroll">
-        {/* <p className="col padding-0">from</p> */}
-        <Autocomplete className="auto-complete-form"
+      <div className="scroll">
+        <Autocomplete className=""
           inputProps={{ style: styles.searchInput }}
           items={this.props.items}
           shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
           getItemValue={item => item.code}
           renderItem={(item, highlighted) =>
-            <div
+            <div className="text-center"
               key={item.code}
               style={{
                 borderRadius: 10,
                 backgroundColor: highlighted ? '#eee' : 'white'
               }}
             >
-              {item.code}
+              <p>{item.code}</p>
             </div>
           }
           menuStyle={styles.menuStyle}
@@ -52,10 +51,11 @@ class AutoComplete extends Component {
 
 const styles = {
   searchInput: {
+    margin: '1vh',
     background: 'none',
+    padding: '0px',
     width: '10vh',
     border: 'none',
-    // borderRadius: 10,
     fontSize: 20,
     fontWeight: 'bold'
   },
@@ -63,16 +63,22 @@ const styles = {
     zIndex: 1,
     // borderRadius: '10px',
     position: 'fixed',
+    
     boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
     background: 'rgba(255, 255, 255, 0.9)',
-    padding: '2px 0',
-    textAlign: 'left',
+    padding: '5px',
+    // textAlign: 'center',
     fontSize: 12,
     height: '15vh',
     width: '10vh',
     overflow: 'auto',
     // maxHeight: '50%',
-  }
+  },
+  icon: {
+    color: 'black',
+    margin: '1vh',
+    fontSize: 20,
+  },
 }
 
 export default AutoComplete;

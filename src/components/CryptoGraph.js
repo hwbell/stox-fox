@@ -27,7 +27,9 @@ export default class CryptoGraph extends Component {
   }
 
   componentDidMount() {
-    console.log(`data length inside cryptograph: ${this.props.dataLength}` )
+    console.log(`data length inside cryptograph: ${this.props.dataLength}` );
+
+    this.handleSelectorClick('full');
   }
 
   // there must be better way for this...
@@ -105,9 +107,30 @@ export default class CryptoGraph extends Component {
       newData[key] = dailyData[key];
     }
 
+    // get the new min and max of the data
+    let keys = Object.keys(newData);
+    let min = newData[keys[0]];
+    let max = newData[keys[0]];
+
+    keys.forEach((key) => {
+      if (newData[key] > max) {
+        max = newData[key];
+      }
+      if (newData[key] < min) {
+        min = newData[key];
+      }
+    });
+
+    // pad the bottom end if it doesn't force it to < 0
+    min - 0.1*min < 0 ? min = 0 : min = min - 0.1*min;
+    // pad the top end
+    max = max + 0.1*max;
+
     this.setState({
       data: newData,
-      dataLength
+      dataLength,
+      min,
+      max
     })
 
     console.log('clicking')
@@ -144,9 +167,8 @@ export default class CryptoGraph extends Component {
                 />
                 <AreaChart width="100%" height="200px"
                   // xtitle="time"
-                  ytitle="USD"
-                  min={this.props.min}
-                  max={this.props.max}
+                  min={this.state.min}
+                  max={this.state.max}
                   data={this.state.data}
                   points={false}
                 />
@@ -163,10 +185,10 @@ export default class CryptoGraph extends Component {
 
 const styles = {
   fullContent: {
-    margin: '0vw'
+    marginBottom: '10vh'
   },
   infoHolder: {
-    marginLeft: '30px'
+    // marginLeft: '30px'
   },
   infoBold: {
     fontWeight: 'bolder',

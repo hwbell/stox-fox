@@ -154,9 +154,9 @@ export default class ForexPage extends Component {
   renderAutoCompleteForms() {
     // TODO - make elements for better reading below
     return (
-      <div className="text-center row" style={styles.searchHolder}>
+      <div className="row" style={styles.searchHolder}>
 
-        <div className="col padding-0 scroll autocomplete">
+        <div className="col-4 padding-0">
           <AutoComplete
             items={cryptos}
             open={false}
@@ -171,10 +171,12 @@ export default class ForexPage extends Component {
             }}
           />
         </div>
-        <div className="col padding-0 ">
-          <i className="fas fa-random" style={styles.icon}></i>
+
+        <div className="col-4" style={{textAlign: 'center' }}>
+          <i class="fas fa-random" style={{marginTop: '12px'}}></i>
         </div>
-        <div className="col padding-0 scroll">
+
+        <div className="col-4 padding-0">
           <AutoComplete
             items={[{ label: 'United States Dollar', code: 'USD' }]}
             value={this.state.toCurrency}
@@ -231,12 +233,13 @@ export default class ForexPage extends Component {
 
 const styles = {
   searchHolder: {
-    width: '250px',
+    width: '200px',
+    // border: '1px solid black',
     margin: '3vh auto'
   },
   icon: {
     // border: '1px solid black',
-    marginTop: '1vh',
+    marginTop: '0.5vh',
     color: 'black',
     fontSize: 15,
   }

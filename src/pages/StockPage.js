@@ -33,9 +33,8 @@ export default class StockPage extends Component {
   constructor(props) {
     super(props);
 
-    this.chart = this.chart.bind(this);
-    // this.getStockData = this.getStockData.bind(this);
-    // this.onSelect = this.onSelect.bind(this);
+    this.renderAutoCompleteForm = this.renderAutoCompleteForm.bind(this);
+    
     this.state = {
       stock: 'MSFT',
       graphStock: 'MSFT'
@@ -44,10 +43,6 @@ export default class StockPage extends Component {
 
   componentDidMount() {
     this.getStockData();
-  }
-
-  chart() {
-    // chart(this.state.data)
   }
 
   getStockData() {
@@ -122,21 +117,13 @@ export default class StockPage extends Component {
     timeSeriesKeys.forEach((key, i) => {
 
       let dataPoint = Number(timeSeries[key]["4. close"].slice(0, 4));
-
-      // check for a new min / max
-      if (dataPoint < min) {
-        min = dataPoint;
-      } else if (dataPoint > max) {
-        max = dataPoint;
-      }
       dataObj[key] = dataPoint;
     })
 
     this.setState({
       stockPrice,
-      min,
-      max
     })
+    
     console.log(dataObj)
     return dataObj;
   }
@@ -146,7 +133,7 @@ export default class StockPage extends Component {
     return (
       <div className="row" style={styles.searchHolder}>
 
-        <div className="col padding-0 scroll">
+        <div className="col-2 padding-0 scroll">
           <AutoComplete
             items={stocks}
             value={this.state.stock}
@@ -162,7 +149,6 @@ export default class StockPage extends Component {
             }}
           />
         </div>
-        
 
       </div>
     )
@@ -178,9 +164,8 @@ export default class StockPage extends Component {
 
       <div className="container">
 
-        {this.renderAutoCompleteForm()}
-
         <StockGraph
+          renderAutoCompleteForm={this.renderAutoCompleteForm}
           alpha={this.props.alpha}
           stock={this.state.graphStock}
           stockPrice={this.state.stockPrice}

@@ -97,24 +97,6 @@ export default class ForexPage extends Component {
         this.setState({ fetchError: true })
       });
 
-    // add an intraday call to the api, but wait 5 seconds first
-    // setTimeout(() => {
-    //   fetch(intradayUrl)
-    //     .then(res => {
-    //       console.log(res);
-    //       let intradayData = this.formatData(res);
-    //       let intradayTimeStamp = res["Meta Data"]["3. Last Refreshed"];
-
-    //       this.setState({
-    //         intradayTimeStamp,
-    //         intradayData,
-    //       });
-
-    //     })
-    //     .catch((err) => {
-    //       console.error(err)
-    //     });
-    // }, 5 * 1000)
   }
 
   formatData = (data) => {
@@ -164,9 +146,9 @@ export default class ForexPage extends Component {
   renderAutoCompleteForms() {
     // TODO - make elements for better reading below
     return (
-      <div className="text-center row" style={styles.searchHolder}>
+      <div className="row" style={styles.searchHolder}>
 
-        <div className="col padding-0 scroll autocomplete">
+        <div className="col-4 padding-0">
           <AutoComplete
             items={physicals}
             open={false}
@@ -181,10 +163,12 @@ export default class ForexPage extends Component {
             }}
           />
         </div>
-        <div className="col padding-0 ">
-          <i className="fas fa-random" style={styles.icon}></i>
+
+        <div className="col-4" style={{textAlign: 'center' }}>
+          <i className="fas fa-random" style={{marginTop: '12px'}}></i>
         </div>
-        <div className="col padding-0 scroll">
+
+        <div className="col-4 padding-0">
           <AutoComplete
             items={physicals}
             value={this.state.toCurrency}
@@ -239,12 +223,12 @@ export default class ForexPage extends Component {
 
 const styles = {
   searchHolder: {
-    width: '250px',
+    width: '200px',
     margin: '3vh auto'
   },
   icon: {
     // border: '1px solid black',
-    marginTop: '1vh',
+    marginTop: '0.5vh',
     color: 'black',
     fontSize: 15,
   }

@@ -59,6 +59,10 @@ class StockGraph extends Component {
     }
   }
 
+  componentDidMount () {
+    // this.handleSelectorClick('full');
+  }
+
   handleSelectorClick(selector) {
 
     // if the selector is 'today' we'll change the data set to the intradayData
@@ -107,15 +111,36 @@ class StockGraph extends Component {
     let newData = {};
     let dateKeys = Object.keys(dailyData);
 
-    // loop through the daily data using the interval and assign new data
+    // loop through the daily data using the length and assign new data
     for (let i = 0; i < dataLength; i++) {
       let key = dateKeys[i];
       newData[key] = dailyData[key];
     }
 
+    // get the new min and max of the data
+    let keys = Object.keys(newData);
+    let min = newData[keys[0]];
+    let max = newData[keys[0]];
+
+    keys.forEach((key) => {
+      if (newData[key] > max) {
+        max = newData[key];
+      }
+      if (newData[key] < min) {
+        min = newData[key];
+      }
+    });
+
+    // pad the bottom end if it doesn't force it to < 0
+    min - 0.1*min < 0 ? min = 0 : min = min - 0.1*min;
+    // pad the top end
+    max = max + 0.1*max;
+
     this.setState({
       data: newData,
-      dataLength
+      dataLength,
+      min,
+      max
     })
 
     console.log('clicking')
@@ -125,38 +150,44 @@ class StockGraph extends Component {
 
   render() {
 
+    // set the min and max of the data
+    
     return (
       <div className="" style={styles.fullContent}>
         {this.props.stockPrice &&
-          <div className="" style={styles.infoHolder}>
-            <p className="" style={styles.infoBold}>{`${this.props.stockPrice} usd`}</p>
+          <div className="row" style={styles.infoHolder}>
 
-            <p style={styles.time}>{this.props.timeStamp}</p>
+            {this.props.renderAutoCompleteForm()}
+          
+            <div className="col-4" style={styles.priceHolder}>
+              <p className="" style={styles.infoBold}>{`${this.props.stockPrice} usd`}</p>
+              <p style={styles.time}>{this.props.timeStamp}</p>
+            </div>
+
           </div>}
 
 
-          <div className="col-12" style={styles.graphHolder}>
-            <DataSelector
-              handleClick={this.handleSelectorClick}
-              dataLength={this.props.dataLength}
-            />
-            {!this.props.fetchError ?
-              <div>
+        <div className="col-12" style={styles.graphHolder}>
+          <DataSelector
+            handleClick={this.handleSelectorClick}
+            dataLength={this.props.dataLength}
+          />
+          {!this.props.fetchError ?
+            <div>
 
-                <AreaChart width="100%" height="200px"
-                  // xtitle="time"
+              <AreaChart width="100%" height="200px"
+                // xtitle="time"
+                min={this.state.min}
+                max={this.state.max}
+                style={styles.chart}
+                data={this.state.data}
+                points={false}
+              />
+            </div>
+            :
+            <FetchErrorMessage />}
 
-                  style={styles.chart}
-                  min={this.props.min}
-                  max={this.props.max}
-                  data={this.state.data}
-                  points={false}
-                />
-              </div>
-              :
-              <FetchErrorMessage />}
-
-          </div>
+        </div>
 
       </div>
     );
@@ -165,10 +196,13 @@ class StockGraph extends Component {
 
 const styles = {
   fullContent: {
-    margin: '0vw'
+    marginBottom: '10vh'
   },
   infoHolder: {
     marginLeft: '30px'
+  },
+  priceHolder: {
+    marginTop: '28px'
   },
   infoBold: {
     fontWeight: 'bolder',

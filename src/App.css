@@ -43,14 +43,12 @@ a:hover {
   padding-right: 0px !important;
   padding-left: 0px !important;
 }
-.autocomplete {
-  font-weight: bold
-}
+
 
 input {
   /* background-color: rgba(248, 240, 255, 0.5); */
   transition: all 0.3s ease;  
-  text-align: center;
+  text-align: left;
 }
 
 input:active, input:focus {
