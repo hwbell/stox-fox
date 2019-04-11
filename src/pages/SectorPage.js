@@ -45,7 +45,7 @@ class SectorPage extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div style={styles.container}>
 
         <SectorsList data={this.state.data}/>
 
@@ -55,7 +55,10 @@ class SectorPage extends Component {
 }
 
 const styles = {
-  
+  container: {
+    padding: 10,
+    paddingTop: 115
+  },
 }
 
 export default SectorPage;

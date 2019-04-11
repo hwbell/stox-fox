@@ -26,6 +26,7 @@ class SectorListItem extends Component {
     const metric = this.props.metric;
     const sectors = this.props.sectors;
 
+    // console.log(metric.replace(/\W/g, '').toLowerCase())
     // get the max of the data for the chart range
     // initialize to the first delta
     const firstDelta = data[metric][sectors[0]];
@@ -43,11 +44,15 @@ class SectorListItem extends Component {
 
     return (
       <ListGroupItem key={this.props.mapKey}>
+
+        {/* strip and convert the metric to all lowercase and use it as 
+        the id to target with dropDown */}
+        <div className="row" id={metric.replace(/\W/g, '').toLowerCase()}>
+
         {/* get rid of the 'Rank (letter): ' part
                   the <p> below shows the performance metric*/}
-
-        <div className="row">
           <p className="col" style={styles.listTitle}>{metric.slice(7)}</p>
+        
         </div>
 
         {/* now map within each metric to show corresponding

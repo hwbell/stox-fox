@@ -10,9 +10,9 @@ import FetchErrorMessage from './FetchErrorMessage';
 // modules
 // import LineChart from 'react-linechart';
 import ReactChartkick, { LineChart, AreaChart } from 'react-chartkick'
-import Chart from 'chart.js'
+import Google from 'chart.js'
 
-ReactChartkick.addAdapter(Chart);
+ReactChartkick.addAdapter(Google);
 
 class StockGraph extends Component {
 
@@ -178,7 +178,7 @@ class StockGraph extends Component {
           {!this.props.fetchError ?
             <div>
 
-              <AreaChart width="100%" height="200px"
+              <AreaChart width="100%" height="400px"
                 // xtitle="time"
                 // discrete={true}
                 min={this.state.min}
@@ -200,7 +200,8 @@ class StockGraph extends Component {
 
 const styles = {
   fullContent: {
-    marginBottom: '10vh'
+    marginBottom: '10vh',
+    // border: '1px solid'
   },
   infoHolder: {
     marginLeft: '30px'

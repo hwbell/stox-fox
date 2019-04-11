@@ -207,7 +207,7 @@ export default class ForexPage extends Component {
       // see npm package react-autocomplete. I wrapped them 
       // in a custom component to make it less confusing
 
-      <div className="container">
+      <div style={styles.container}>
 
         {this.renderAutoCompleteForms()}
 
@@ -232,10 +232,15 @@ export default class ForexPage extends Component {
 }
 
 const styles = {
+  container: {
+    padding: 10,
+    paddingTop: 115
+  },
   searchHolder: {
     width: '200px',
     // border: '1px solid black',
     margin: '3vh auto'
+    
   },
   icon: {
     // border: '1px solid black',

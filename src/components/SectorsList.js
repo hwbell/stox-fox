@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 
 // modules
-import { ListGroup } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup } from 'reactstrap';
 
 // components
 import SectorListItem from './SectorListItem';
+
+// for the dropDown links, great package
+import AnchorLink from 'react-anchor-link-smooth-scroll'
+
 
 // styling
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,28 +18,70 @@ class Header extends Component {
 
   constructor(props) {
     super(props);
+    this.toggle = this.toggle.bind(this);
     this.state = {
-
-    }
+      dropdownOpen: false
+    };
   }
 
   componentDidMount() {
 
   }
 
+  renderDropDownMenu(metrics) {
+
+    // toss the first - just says "Meta Data"
+    metrics = metrics.slice(1);
+
+    return (
+      <Dropdown className="float-right"
+        style={styles.dropdown}
+        isOpen={this.state.dropdownOpen}
+        toggle={this.toggle}>
+
+        <DropdownToggle color="link" className="dropdown-link" style={styles.link}>
+          metrics
+        </DropdownToggle>
+        <DropdownMenu>
+
+          {metrics.map((metric) => {
+            let linkTitle = metric.slice(7);
+            let linkTarget = '#' + metric.replace(/\W/g, '').toLowerCase();
+            {/* console.log(linkTitle, linkTarget) */ }
+            return (
+              <DropdownItem>
+                <AnchorLink offset={() => 115} style={styles.link} href={linkTarget} className="dropdown-link">{linkTitle}</AnchorLink>
+              </DropdownItem>
+            )
+          })}
+
+        </DropdownMenu>
+      </Dropdown>
+    )
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
+  }
+
   render() {
     // make below easier to read
     const data = this.props.data;
 
-    // get the keys, which are the sectors - 'Energy', 'Industrials', 'Financials', 'Utilities', 'Consumer Discretionary', 
-    //                'Consumer Staples', 'Information Technology', 'Materials', 
-    //                'Communication Services', 'Real Estate', 'Health Care'
+    // get the keys, which are the metrics - 
+
     const performanceProps = Object.keys(data);
+    // console.log(performanceProps)
 
     return (
-      <div className="container" style={styles.container}>
 
-      {/* each ListGroup contains a performance metric - real time performance 1 day performance,
+      <div style={styles.container}>
+
+        {this.renderDropDownMenu(performanceProps)}
+
+        {/* each ListGroup contains a performance metric - real time performance 1 day performance,
       and the delta for each sector   */}
         <ListGroup>
           {
@@ -43,8 +89,8 @@ class Header extends Component {
               {/* skip the 0th index - its metadata */ }
               const sectors = Object.keys(data[metric]);
               return (
-                i > 0 && 
-                <SectorListItem 
+                i > 0 &&
+                <SectorListItem
                   mapKey={i}
                   data={data}
                   metric={metric}
@@ -54,6 +100,7 @@ class Header extends Component {
             })
           }
         </ListGroup>
+
       </div>
     );
   }
@@ -61,7 +108,22 @@ class Header extends Component {
 
 const styles = {
   container: {
-    marginBottom: '7vh'
+    marginTop: '8vh',
+    marginBottom: '8vh'
+  },
+  dropdown: {
+    position: 'fixed',
+    top: '25%',
+    left: '80%',
+    zIndex: 1,
+    backgroundColor: 'whitesmoke',
+    borderRadius: '20px'
+  },
+  link: {
+    padding: '1vh',
+    fontFamily: 'inherit',
+    fontWeight: '400',
+    fontSize: 'calc(0.4vw + 18px)',
   },
   listTitle: {
     textAlign: 'left',

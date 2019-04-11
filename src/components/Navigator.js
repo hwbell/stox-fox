@@ -37,7 +37,7 @@ export default class Example extends React.Component {
   }
   render() {
     return (
-      <div className="container" style={styles.container}>
+      <div className="fixed-top" style={styles.container}>
         <div className="row">
 
           <div className="col-12 col-sm-6">
@@ -72,7 +72,6 @@ export default class Example extends React.Component {
           </div>
 
         </div>
-        <hr />
       </div>
     );
   }
@@ -80,24 +79,29 @@ export default class Example extends React.Component {
 
 const styles = {
   container: {
-    marginTop: '2vh'
+    // border: '1px solid',
+    // height: '50px'
+    // marginTop: '2vh',
+
+    // backgroundColor: 'rgba(255,255,255,0.9)'
   },
   title: {
-    marginTop: '1.5vh',
+    paddingTop: '1vh',
     // fontWeight: 'lighter',
     fontSize: 32,
   },
   icon: {
-    margin: '2vh',
+    paddingTop: '1vh',
     fontSize: 40,
   },
   linkHolder: {
-    marginTop: '2vh'
+    paddingRight: '5vw',
+    paddingTop: '1vh'
   },
   link: {
-    padding: '1vh',
+    paddingRight: '2vh',
     fontFamily: 'inherit',
     fontWeight: '600',
-    fontSize: 'calc(0.4vw + 16px)',
+    fontSize: 'calc(0.4vw + 18px)',
   }
 }

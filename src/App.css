@@ -19,19 +19,27 @@ body {
   background-size: 100%;
   background: linear-gradient(to right, rgba(255, 227, 219, 0.5), rgb(255, 255, 255));
 }
+
+/* for the header and footer */
 .fixed-bottom {
   background:linear-gradient(to right, rgba(251, 215, 253, 0.5), rgb(255, 255, 255));
+}
+.fixed-top {
+  background: linear-gradient(to right, rgba(255, 243, 239, 0.9), rgb(255, 255, 255));
 }
 
 a:hover {
   text-decoration: none;
 }
 .nav-link {
-  transition: all 0.3s ease;
   float: right !important;
+}
+.nav-link, .dropdown-link {
+  transition: all 0.3s ease;
   color: #4527A0;
 }
-.nav-link:hover, .nav-link:active {
+.nav-link:hover, .nav-link:active, .dropdown-link:hover, .dropdown-link:active, .dropdown-link:focus {
+  text-decoration: none;
   -webkit-transform: translateX(-2px);
   -ms-transform: translateX(-2px);
   transform: translateX(-2px);

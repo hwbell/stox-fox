@@ -162,7 +162,7 @@ export default class StockPage extends Component {
       // see npm package react-autocomplete. I wrapped them 
       // in a custom component to make it less confusing
 
-      <div className="container">
+      <div style={styles.container}>
 
         <StockGraph
           renderAutoCompleteForm={this.renderAutoCompleteForm}
@@ -183,6 +183,10 @@ export default class StockPage extends Component {
 }
 
 const styles = {
+  container: {
+    padding: 10,
+    paddingTop: 115
+  },
   searchHolder: {
     margin: '20px 0px'
   }
