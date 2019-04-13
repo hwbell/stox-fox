@@ -114,7 +114,7 @@ const styles = {
   dropdown: {
     position: 'fixed',
     top: '25%',
-    left: '80%',
+    left: '75%',
     zIndex: 1,
     backgroundColor: 'whitesmoke',
     borderRadius: '20px'

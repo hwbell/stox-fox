@@ -59,7 +59,7 @@ export default class ForexPage extends Component {
     // chart(this.state.data)
   }
 
-  // unfortunately the npm package doesnt cover eveyrything, so we just
+  // unfortunately the npm package doesnt cover everything, so we just
   // do a node-fetch in this component 
 
   getForexData() {
@@ -115,20 +115,21 @@ export default class ForexPage extends Component {
 
     // initialize min and max for the data 
     let firstDataPoint = Number(timeSeries[timeSeriesKeys[0]]["4. close"]);
-    let min = firstDataPoint;
-    let max = firstDataPoint;
-    let exchangeRate = firstDataPoint;
-    // now convert the date by date data to the form above
+    let min = Math.floor(firstDataPoint);
+    let max = Math.floor(firstDataPoint) + 1;
 
+    let exchangeRate = firstDataPoint;
+
+    // now convert the date by date data to the form above
     timeSeriesKeys.forEach((key, i) => {
       // get the dataPoint
       let dataPoint = Number(timeSeries[key]["4. close"]);
 
-      // check for the min and max
+      // check for a new min and max
       if (dataPoint < min) {
-        min = dataPoint;
+        min = Math.floor(dataPoint);
       } else if (dataPoint > max) {
-        max = dataPoint;
+        max = Math.floor(dataPoint);
       }
       // add it to the master object
       dataObj[key] = dataPoint;
@@ -164,8 +165,8 @@ export default class ForexPage extends Component {
           />
         </div>
 
-        <div className="col-4" style={{textAlign: 'center' }}>
-          <i className="fas fa-random" style={{marginTop: '12px'}}></i>
+        <div className="col-4" style={{ textAlign: 'center' }}>
+          <i className="fas fa-random" style={{ marginTop: '12px' }}></i>
         </div>
 
         <div className="col-4 padding-0">

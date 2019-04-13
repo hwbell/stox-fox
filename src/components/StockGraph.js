@@ -22,8 +22,6 @@ class StockGraph extends Component {
     this.state = {
       type: 'daily',
       data: null,
-      min: null,
-      max: null
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -122,15 +120,15 @@ class StockGraph extends Component {
 
     // get the new min and max of the data
     let keys = Object.keys(newData);
-    let min = newData[keys[0]];
-    let max = newData[keys[0]];
+    let min = Math.floor(newData[keys[0]]);
+    let max = Math.floor(newData[keys[0]]);
 
     keys.forEach((key) => {
       if (newData[key] > max) {
-        max = newData[key];
+        max = Math.floor(newData[key]);
       }
       if (newData[key] < min) {
-        min = newData[key];
+        min = Math.floor(newData[key]);
       }
     });
 
@@ -178,11 +176,11 @@ class StockGraph extends Component {
           {!this.props.fetchError ?
             <div>
 
-              <AreaChart width="100%" height="400px"
-                // xtitle="time"
-                // discrete={true}
-                min={this.state.min}
-                max={this.state.max}
+              <AreaChart width="100%" height="300px"
+                // if the min / max has changed, this.state.min and this.state.max will exist
+                // if not, use the provided(initial) min/max
+                min={this.state.min || this.props.min}
+                max={this.state.max || this.props.min}
                 style={styles.chart}
                 data={this.state.data}
                 points={false}

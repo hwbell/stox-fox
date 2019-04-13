@@ -110,7 +110,11 @@ export default class StockPage extends Component {
 
     // initialize min and max for the data 
     let min = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+    min = Math.floor(min);
+    
     let max = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
+    max = Math.floor(max);
+
     let stockPrice = Number(timeSeries[timeSeriesKeys[0]]["4. close"].slice(0, 4));
 
     // now convert the date by date data to the form above
@@ -122,6 +126,8 @@ export default class StockPage extends Component {
 
     this.setState({
       stockPrice,
+      min,
+      max
     })
     
     console.log(dataObj)
@@ -170,6 +176,8 @@ export default class StockPage extends Component {
           stock={this.state.graphStock}
           stockPrice={this.state.stockPrice}
           data={this.state.data}
+          min={this.state.min}
+          max={this.state.max}
           timeStamp={this.state.timeStamp}
           dataLength={this.state.dataLength}
           intradayTimeStamp={this.state.intradayTimeStamp}

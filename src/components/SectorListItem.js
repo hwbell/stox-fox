@@ -32,27 +32,27 @@ class SectorListItem extends Component {
     const firstDelta = data[metric][sectors[0]];
 
     // convert to number 
-    let maxOfData = Number(firstDelta.slice(0, firstDelta.length-1));
+    let maxOfData = Number(firstDelta.slice(0, firstDelta.length - 1));
 
     Object.keys(data[metric]).forEach((sector, i) => {
       let delta = data[metric][sector];
       let deltaNum = Number(delta.slice(0, delta.length - 1));
 
       // set as new max if greater than
-      if (deltaNum > maxOfData) {maxOfData = deltaNum};
+      if (deltaNum > maxOfData) { maxOfData = deltaNum };
     })
 
     return (
-      <ListGroupItem key={this.props.mapKey}>
+      <ListGroupItem style={styles.container} key={this.props.mapKey}>
 
         {/* strip and convert the metric to all lowercase and use it as 
         the id to target with dropDown */}
         <div className="row" id={metric.replace(/\W/g, '').toLowerCase()}>
 
-        {/* get rid of the 'Rank (letter): ' part
+          {/* get rid of the 'Rank (letter): ' part
                   the <p> below shows the performance metric*/}
           <p className="col" style={styles.listTitle}>{metric.slice(7)}</p>
-        
+
         </div>
 
         {/* now map within each metric to show corresponding
@@ -68,7 +68,7 @@ class SectorListItem extends Component {
 
           {/* convert to number, as it comes in string as "0.05%" or -0.05% */ }
           let deltaNum = Number(delta.slice(0, delta.length - 1));
-          
+
           return (
             <div key={i} className="">
               <div className="row" style={styles.info}>
@@ -77,12 +77,12 @@ class SectorListItem extends Component {
                 <p style={{ margin: '1vw 0.5vw', color: deltaColor }}>{delta}</p>
               </div>
 
-              <Progress max={maxOfData+1}
+              <Progress max={maxOfData + 1}
                 value={deltaNum < 0 ? -deltaNum : deltaNum}
                 color={deltaNum < 0 ? "danger" : ""} />
 
             </div>
-            
+
           )
         })}
 
@@ -92,12 +92,16 @@ class SectorListItem extends Component {
 }
 
 const styles = {
+  container: {
+    padding: '4vw'
+  },
   header: {
     width: '100%',
     margin: '3vh'
   },
   listTitle: {
     // textAlign: 'left',
+    fontSize: 'calc(16px + 0.5vw)',
     fontWeight: 'bold'
   },
   info: {
@@ -107,7 +111,7 @@ const styles = {
     margin: '1vw',
     fontWeight: 550
   },
-  
+
 }
 
 export default SectorListItem;

@@ -23,7 +23,6 @@ export default class CryptoGraph extends Component {
 
     this.state = {
       data: this.props.data,
-      minMaxChanged: false
     }
   }
 
@@ -79,7 +78,7 @@ export default class CryptoGraph extends Component {
     console.log(selector)
     // console.log(dailyData)
 
-    // week, month, year, 5 year are all handled with the daily data 
+    // week, month, year, full are all handled with the daily data 
     // 5 years is the returned length of the 'daily' api call,
     // so we'll make this the default
 
@@ -111,16 +110,17 @@ export default class CryptoGraph extends Component {
     }
 
     // get the new min and max of the data
+    // padding of 0.25 is given to the max, and to the min if that doesn't force it to negative
     let keys = Object.keys(newData);
-    let min = newData[keys[0]];
-    let max = newData[keys[0]];
+    let min = Math.floor(newData[keys[0]]);
+    let max = Math.floor(newData[keys[0]]) + 0.25;
 
     keys.forEach((key) => {
       if (newData[key] > max) {
-        max = newData[key];
+        max = Math.floor(newData[key]) + 0.25;
       }
       if (newData[key] < min) {
-        min = newData[key];
+        min = Math.floor(newData[key] - 0.25);
       }
     });
 
@@ -169,10 +169,12 @@ export default class CryptoGraph extends Component {
                   handleClick={this.handleSelectorClick}
                   dataLength={this.props.dataLength}
                 />
-                <AreaChart width="100%" height="200px"
+                <AreaChart width="100%" height="300px"
                   // xtitle="time"
-                  min={this.state.minMaxChanged ? this.state.min: null}
-                  max={this.state.minMaxChanged ? this.state.max: null}
+                  // if the min / max has changed, this.state.min and this.state.max will exist
+                // if not, use the provided(initial) min/max
+                  min={this.state.min || this.props.min}
+                  max={this.state.max || this.props.max}
                   data={this.state.data}
                   points={false}
                 />

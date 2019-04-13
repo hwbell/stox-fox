@@ -123,8 +123,10 @@ export default class ForexPage extends Component {
     let dataObj = {};
 
     // initialize min and max for the data 
-    let min = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
-    let max = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
+    let firstDataPoint = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
+    let min = Math.floor(firstDataPoint);
+    let max = Math.floor(firstDataPoint);
+    
     let exchangeRate = Number(timeSeries[timeSeriesKeys[0]]["4b. close (USD)"].slice(0, 4));
     // now convert the date by date data to the form above
 
@@ -132,11 +134,11 @@ export default class ForexPage extends Component {
       // get the dataPoint
       let dataPoint = Number(timeSeries[key]["4b. close (USD)"].slice(0, 4));
 
-      // check for the min and max
+      // check for a new min and max
       if (dataPoint < min) {
-        min = dataPoint;
+        min = Math.floor(dataPoint);
       } else if (dataPoint > max) {
-        max = dataPoint;
+        max = Math.floor(dataPoint);
       }
       // add it to the master object
       dataObj[key] = dataPoint;
@@ -220,8 +222,8 @@ export default class ForexPage extends Component {
               toCurrency={this.state.toCurrency}
               exchangeRate={this.state.exchangeRate}
               timeStamp={this.state.timeStamp}
-              min={null}
-              max={null}
+              min={this.state.min}
+              max={this.state.max}
               dataLength={this.state.dataLength}
               fetchError={this.state.fetchError}
             />
