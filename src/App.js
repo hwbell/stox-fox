@@ -32,8 +32,6 @@ const RoutesContainer = posed.div({
 });
 
 // modules
-// var d3 = require("d3");
-console.log(process.env.ALPHA_KEY)
 const alphaKey = require('alphavantage')({ key: process.env.REACT_APP_ALPHA_KEY });
 
 
@@ -57,6 +55,10 @@ class App extends Component {
     return (
       <Router>
         <div>
+
+          {/* for the background image. can set its own opacity this way */}
+          <div className="body-img"></div>
+
           <Navigator />
           <Route render={({ location }) => (
             // pose is kind of awesome! and super easy for a simple 
@@ -77,7 +79,7 @@ class App extends Component {
             </PoseGroup>
 
           )} />
-          <Footer/>
+          <Footer />
         </div>
       </Router>
     );

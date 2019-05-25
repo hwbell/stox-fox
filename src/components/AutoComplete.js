@@ -57,7 +57,8 @@ const styles = {
     width: '10vh',
     border: 'none',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   menuStyle: {
     zIndex: 1,
@@ -75,7 +76,6 @@ const styles = {
     // maxHeight: '50%',
   },
   icon: {
-    color: 'black',
     margin: '1vh',
     fontSize: 20,
   },

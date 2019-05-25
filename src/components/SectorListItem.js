@@ -43,7 +43,7 @@ class SectorListItem extends Component {
     })
 
     return (
-      <ListGroupItem style={styles.container} key={this.props.mapKey}>
+      <div style={styles.container} key={this.props.mapKey}>
 
         {/* strip and convert the metric to all lowercase and use it as 
         the id to target with dropDown */}
@@ -64,7 +64,7 @@ class SectorListItem extends Component {
 
           {/* check for a - symbol ...  EX "-0.05%" 
           Make red if - symbol found */ }
-          let deltaColor = delta.indexOf('-') !== -1 ? 'red' : 'blue';
+          let deltaColor = delta.indexOf('-') !== -1 ? '#EF9A9A' : '#90CAF9';
 
           {/* convert to number, as it comes in string as "0.05%" or -0.05% */ }
           let deltaNum = Number(delta.slice(0, delta.length - 1));
@@ -77,7 +77,7 @@ class SectorListItem extends Component {
                 <p style={{ margin: '1vw 0.5vw', color: deltaColor }}>{delta}</p>
               </div>
 
-              <Progress max={maxOfData + 1}
+              <Progress style={styles.progressBar} max={maxOfData + 1}
                 value={deltaNum < 0 ? -deltaNum : deltaNum}
                 color={deltaNum < 0 ? "danger" : ""} />
 
@@ -86,21 +86,23 @@ class SectorListItem extends Component {
           )
         })}
 
-      </ListGroupItem>
+      </div>
     );
   }
 }
 
 const styles = {
   container: {
-    padding: '4vw'
+    zIndex: 1,
+    padding: '4vw',
+    backgroundColor: 'none'
   },
   header: {
     width: '100%',
     margin: '3vh'
   },
   listTitle: {
-    // textAlign: 'left',
+    // color: 'black',
     fontSize: 'calc(16px + 0.5vw)',
     fontWeight: 'bold'
   },
@@ -111,6 +113,10 @@ const styles = {
     margin: '1vw',
     fontWeight: 550
   },
+  progressBar: {
+    width: '70%',
+    minWidth: '200px'
+  }
 
 }
 

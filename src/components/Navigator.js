@@ -103,33 +103,24 @@ export default class Example extends React.Component {
   render() {
     return (
       <div className="fixed-top" style={styles.container}>
-        <div className="row">
 
-          <div className="col-6" style={styles.titleHolder}>
-            <div className="text-center row">
 
-              <div className="col">
-                <p className="" style={styles.title} >$toxFox</p>
-              </div>
-
-              <div className="col">
-                <i className="fab fa-wolf-pack-battalion orange-gradient" style={styles.icon}></i>
-              </div>
-
-            </div>
-          </div>
-
-          <Media query="(max-width: 599px)">
-            {matches =>
-              matches ? (
-                this.renderDropDown()
-              ) : (
-                  this.renderLinks()
-                )
-            }
-          </Media>
-
+        <div style={styles.titleHolder}>
+          <p style={styles.title} >$toxFox</p>
+          <i className="fab fa-wolf-pack-battalion" style={styles.icon}></i>
         </div>
+
+
+        <Media query="(max-width: 599px)">
+          {matches =>
+            matches ? (
+              this.renderDropDown()
+            ) : (
+                this.renderLinks()
+              )
+          }
+        </Media>
+
       </div>
     );
   }
@@ -137,24 +128,28 @@ export default class Example extends React.Component {
 
 const styles = {
   container: {
-    // border: '1px solid',
-    // height: '50px'
+    height: '90px',
     paddingTop: '2vh',
-    minWidth: '350px'
-
-    // backgroundColor: 'rgba(255,255,255,0.9)'
+    minWidth: '350px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(25,25,25,0.9)'
   },
   titleHolder: {
-    minWidth: '250px'
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   title: {
-    padding: '1vw',
-    paddingLeft: '20px',
-    // fontWeight: 'lighter',
+    margin: '20px',
     fontSize: 32,
+    // color: 'white'
   },
   icon: {
-    paddingTop: '1vh',
+    // paddingTop: '1vh',
     fontSize: 40,
   },
   linkHolder: {

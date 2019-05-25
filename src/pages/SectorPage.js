@@ -45,7 +45,7 @@ class SectorPage extends Component {
 
   render() {
     return (
-      <div style={styles.container}>
+      <div className="page" style={styles.container}>
 
         <SectorsList data={this.state.data}/>
 
@@ -56,8 +56,7 @@ class SectorPage extends Component {
 
 const styles = {
   container: {
-    padding: 10,
-    paddingTop: 115
+    paddingTop: '90px'
   },
 }
 

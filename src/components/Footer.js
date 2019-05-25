@@ -26,10 +26,10 @@ export default class Footer extends React.Component {
     return (
       <div className="text-center row fixed-bottom" style={styles.container}>
         
-        <div className="col-12">
+        <div className="">
           <div style={styles.linkHolder}>
             <a target="_blank" href="https://www.alphavantage.co">
-              <p>
+              <p style={styles.text} className="footer-text">
                 powered by <strong>Alpha Vantage</strong>
               </p>
             </a>
@@ -47,5 +47,9 @@ const styles = {
     paddingLeft: '4vh',
     // backgroundColor: 'rgba(239, 219, 255, 0.5)',
   },
+  text: {
+    fontSize: '20px',
+    marginLeft: '40px' 
+  }
   
 }

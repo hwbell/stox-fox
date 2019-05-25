@@ -108,14 +108,15 @@ class Header extends Component {
 
 const styles = {
   container: {
-    marginTop: '8vh',
-    marginBottom: '8vh'
+    // marginTop: '8vh',
+    marginBottom: '8vh',
+    zIndex: 1,
   },
   dropdown: {
     position: 'fixed',
-    top: '25%',
+    top: '13%',
     left: '75%',
-    zIndex: 1,
+    zIndex: 2,
     backgroundColor: 'whitesmoke',
     borderRadius: '20px'
   },
