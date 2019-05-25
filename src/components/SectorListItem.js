@@ -40,7 +40,10 @@ class SectorListItem extends Component {
 
       // set as new max if greater than
       if (deltaNum > maxOfData) { maxOfData = deltaNum };
-    })
+    });
+
+    // get the index to chop the metric title @ the word 'Performance'
+    let sliceInd = metric.indexOf('Performance');
 
     return (
       <div style={styles.container} key={this.props.mapKey}>
@@ -51,7 +54,7 @@ class SectorListItem extends Component {
 
           {/* get rid of the 'Rank (letter): ' part
                   the <p> below shows the performance metric*/}
-          <p className="col" style={styles.listTitle}>{metric.slice(7)}</p>
+          <p className="col" style={styles.listTitle}>{metric.slice(7, sliceInd)}</p>
 
         </div>
 
@@ -65,6 +68,11 @@ class SectorListItem extends Component {
           {/* check for a - symbol ...  EX "-0.05%" 
           Make red if - symbol found */ }
           let deltaColor = delta.indexOf('-') !== -1 ? '#EF9A9A' : '#90CAF9';
+          let barStyle = {
+            backgroundColor: deltaColor,
+            width: '70%',
+            minWidth: '200px'
+          }
 
           {/* convert to number, as it comes in string as "0.05%" or -0.05% */ }
           let deltaNum = Number(delta.slice(0, delta.length - 1));
@@ -77,7 +85,8 @@ class SectorListItem extends Component {
                 <p style={{ margin: '1vw 0.5vw', color: deltaColor }}>{delta}</p>
               </div>
 
-              <Progress style={styles.progressBar} max={maxOfData + 1}
+              <Progress style={barStyle} max={maxOfData + 1}
+                color={deltaColor}
                 value={deltaNum < 0 ? -deltaNum : deltaNum}
                 color={deltaNum < 0 ? "danger" : ""} />
 
@@ -94,29 +103,21 @@ class SectorListItem extends Component {
 const styles = {
   container: {
     zIndex: 1,
-    padding: '4vw',
+    padding: '30px',
     backgroundColor: 'none'
-  },
-  header: {
-    width: '100%',
-    margin: '3vh'
   },
   listTitle: {
     // color: 'black',
-    fontSize: 'calc(16px + 0.5vw)',
+    fontSize: 'calc(20px)',
     fontWeight: 'bold'
   },
   info: {
-    padding: '1.5vw'
+    padding: '8px'
   },
   sector: {
     margin: '1vw',
     fontWeight: 550
   },
-  progressBar: {
-    width: '70%',
-    minWidth: '200px'
-  }
 
 }
 

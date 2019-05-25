@@ -71,7 +71,7 @@ export default class Example extends React.Component {
           isOpen={this.state.dropdownOpen}
           toggle={this.toggle}>
 
-          <DropdownToggle color="link" className="dropdown-link">
+          <DropdownToggle color="link" className="nav-link">
             <i style={styles.dropDownIcon} className="dropdown fas fa-align-justify"></i>
           </DropdownToggle>
           <DropdownMenu>
@@ -106,8 +106,8 @@ export default class Example extends React.Component {
 
 
         <div style={styles.titleHolder}>
-          <p style={styles.title} >$toxFox</p>
-          <i className="fab fa-wolf-pack-battalion" style={styles.icon}></i>
+          <p style={styles.title} >Market Monitor</p>
+          {/* <i className="fab fa-wolf-pack-battalion" style={styles.icon}></i> */}
         </div>
 
 
@@ -128,8 +128,8 @@ export default class Example extends React.Component {
 
 const styles = {
   container: {
-    height: '90px',
-    paddingTop: '2vh',
+    height: '70px',
+    // paddingTop: '2vh',
     minWidth: '350px',
     display: 'flex',
     flexDirection: 'row',
@@ -144,9 +144,10 @@ const styles = {
     alignItems: 'center'
   },
   title: {
-    margin: '20px',
-    fontSize: 32,
-    // color: 'white'
+    marginLeft: '20px',
+    marginTop: '5px',
+    fontSize: '28px',
+    color: 'whitesmoke'
   },
   icon: {
     // paddingTop: '1vh',

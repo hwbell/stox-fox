@@ -40,16 +40,20 @@ class Header extends Component {
         toggle={this.toggle}>
 
         <DropdownToggle color="link" className="dropdown-link" style={styles.link}>
-          metrics
+          time series <i className="fas fa-sort-down"></i>
         </DropdownToggle>
         <DropdownMenu>
 
-          {metrics.map((metric) => {
-            let linkTitle = metric.slice(7);
+          {metrics.map((metric, i) => {
+
+            // get the index to chop the metric title @ the word 'Performance'
+            let sliceInd = metric.indexOf('Performance');
+            let linkTitle = metric.slice(7, sliceInd);
+
             let linkTarget = '#' + metric.replace(/\W/g, '').toLowerCase();
             {/* console.log(linkTitle, linkTarget) */ }
             return (
-              <DropdownItem>
+              <DropdownItem key={i}>
                 <AnchorLink offset={() => 115} style={styles.link} href={linkTarget} className="dropdown-link">{linkTitle}</AnchorLink>
               </DropdownItem>
             )
@@ -91,6 +95,7 @@ class Header extends Component {
               return (
                 i > 0 &&
                 <SectorListItem
+                  key={i}
                   mapKey={i}
                   data={data}
                   metric={metric}
@@ -114,17 +119,17 @@ const styles = {
   },
   dropdown: {
     position: 'fixed',
-    top: '13%',
-    left: '75%',
+    top: '120px',
+    right: '40px',
     zIndex: 2,
     backgroundColor: 'whitesmoke',
-    borderRadius: '20px'
+    borderRadius: '4px',
   },
   link: {
-    padding: '1vh',
+    padding: '4px 8px',
     fontFamily: 'inherit',
     fontWeight: '400',
-    fontSize: 'calc(0.4vw + 18px)',
+    fontSize: '14px',
   },
   listTitle: {
     textAlign: 'left',

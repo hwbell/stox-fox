@@ -7,6 +7,7 @@ import '../App.css';
 // components
 import AutoComplete from '../components/AutoComplete';
 import StockGraph from '../components/StockGraph';
+import FetchErrorMessage from '../components/FetchErrorMessage';
 import { Spinner } from 'reactstrap';
 // data
 import Stocks from '../assets/data/nasdaq';
@@ -30,6 +31,7 @@ const stocks = getObjFromCurrencyArray(Stocks);
 // state obj for when the selection changes
 const loadingState = {
   data: null,
+  graphData: null
 }
 
 // 
@@ -266,7 +268,7 @@ export default class StockPage extends Component {
 
       <div className="page" style={styles.container}>
 
-        {this.state.graphData ?
+        {this.state.graphData &&
           <StockGraph
             renderAutoCompleteForm={this.renderAutoCompleteForm}
             handleSelectorClick={this.handleSelectorClick}
@@ -280,10 +282,13 @@ export default class StockPage extends Component {
             dataLength={this.state.dataLength}
             graphDataLength={this.state.graphDataLength}
             intradayTimeStamp={this.state.intradayTimeStamp}
-            intradayData={this.state.intradayData}
-            fetchError={this.state.fetchError}
-          /> :
-          <Spinner style={styles.spinner} color="primary" />}
+            intradayData={this.state.intradayData}/>
+
+          }
+
+          {this.state.fetchError &&
+            <FetchErrorMessage />
+          }
 
       </div>
     );

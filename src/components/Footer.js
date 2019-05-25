@@ -29,7 +29,7 @@ export default class Footer extends React.Component {
         <div className="">
           <div style={styles.linkHolder}>
             <a target="_blank" href="https://www.alphavantage.co">
-              <p style={styles.text} className="footer-text">
+              <p style={styles.text} className="nav-link">
                 powered by <strong>Alpha Vantage</strong>
               </p>
             </a>
@@ -43,13 +43,14 @@ export default class Footer extends React.Component {
 
 const styles = {
   container: {
-    paddingTop: '2vh',
+    // paddingTop: '2vh',
+    padding: '0px',
     paddingLeft: '4vh',
-    // backgroundColor: 'rgba(239, 219, 255, 0.5)',
+    backgroundColor: 'rgba(25,25,25, 0.9)',
   },
   text: {
     fontSize: '20px',
-    marginLeft: '40px' 
+    marginLeft: '20px' 
   }
   
 }

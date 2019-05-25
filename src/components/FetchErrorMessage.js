@@ -11,16 +11,17 @@ export default class FetchErrorMessage extends React.Component {
   }
   render() {
     return (
-      <div className="row " style={styles.container}>
-        <div className="col-12">
+      <div className="" style={styles.container}>
           <p>
-            Sorry, there is no time series data available at this time
-          </p>
-          <p>
-            
+            {`Sorry, there is no time series data available at this time.`}
           </p>
 
-        </div>
+          <p>
+            {`Alpha Vantage's free tier only allows for 5 calls / minute.
+              You probably just need to wait a few seconds and try again.`}
+          </p>
+
+          
       </div>
     );
   }
@@ -28,6 +29,10 @@ export default class FetchErrorMessage extends React.Component {
 
 const styles = {
   container: {
-    paddingTop: '2vh',
-  }
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
 }

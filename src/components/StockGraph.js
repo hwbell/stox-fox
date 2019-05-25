@@ -6,7 +6,6 @@ import '../App.css';
 
 // components
 import DataSelector from './DataSelector';
-import FetchErrorMessage from './FetchErrorMessage';
 
 // modules
 import { AreaChart } from 'react-chartkick'
@@ -18,14 +17,14 @@ class StockGraph extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       type: 'daily',
       data: null,
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // this.handleSelectorClick('full');
   }
 
@@ -45,44 +44,41 @@ class StockGraph extends Component {
         ]
       }
     };
-       
+
 
     // set the min and max of the data
-    
+
     return (
       <div className="" style={styles.fullContent}>
         {this.props.stockPrice &&
-          <div className="row" style={styles.infoHolder}>
+          <div className="" style={styles.infoHolder}>
 
             {this.props.renderAutoCompleteForm()}
-          
-            <div className="col-4" style={styles.priceHolder}>
+
+            <div className="" style={styles.priceHolder}>
 
               <p className="" style={styles.infoBold}>{`${this.props.stockPrice} usd`}</p>
               <p style={styles.time}>{this.props.timeStamp}</p>
-           
+
             </div>
 
           </div>}
 
 
-        <div className="col-12" style={styles.graphHolder}>
+        <div className="" style={styles.graphHolder}>
           <DataSelector
             handleClick={this.props.handleSelectorClick}
             dataLength={this.props.dataLength}
           />
-          {!this.props.fetchError ?
-            <div>
+          <div style={{zIndex: 3}}>
 
-              <AreaChart width="100%" height="300px"
-                library={options}
-                dataset={styles.chart}
-                data={this.props.data}
-                points={false}
-              />
-            </div>
-            :
-            <FetchErrorMessage />}
+            <AreaChart width="100%" height="300px"
+              library={options}
+              dataset={styles.chart}
+              data={this.props.data}
+              points={false}
+            />
+          </div>
 
         </div>
 
@@ -93,23 +89,29 @@ class StockGraph extends Component {
 
 const styles = {
   fullContent: {
+
     width: '100%'
   },
   infoHolder: {
-    marginLeft: '30px'
+    // border: '1px solid white',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'space evenly'
   },
   priceHolder: {
-    marginTop: '28px'
+    margin: '10px'
   },
   infoBold: {
+    paddingTop: '25px',
     fontWeight: 'bolder',
-    fontSize: 20
+    fontSize: '24px'
   },
   time: {
-    fontSize: '12px'
+    fontSize: '14px'
   },
   chart: {
-    backgroundColor: 'rgba(255,255,255,0.5)'
+    // backgroundColor: 'none'
   }
 }
 
