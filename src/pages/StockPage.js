@@ -68,6 +68,8 @@ export default class StockPage extends Component {
         // the 2nd key returned from Object.keys(res)
         let resKeys = Object.keys(res);
         let dataLength = Object.keys(res[resKeys[1]]).length;
+
+        console.log(res)
         // console.log(`dataLength inside cryptopage: ${dataLength}`)
         this.setState({
           data,
@@ -150,7 +152,7 @@ export default class StockPage extends Component {
     return (
       <div className="row" style={styles.searchHolder}>
 
-        <div className="col-2 padding-0 scroll">
+        <div className="col padding-0 scroll">
           <AutoComplete
             items={stocks}
             value={this.state.stock}
@@ -306,7 +308,11 @@ const styles = {
     alignItems: 'center'
   },
   searchHolder: {
-    margin: '20px 0px'
+    // margin: '20px 0px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   spinner: {
     position: 'absolute',

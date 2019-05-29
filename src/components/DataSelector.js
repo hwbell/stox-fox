@@ -46,13 +46,15 @@ export default class DataSelector extends React.Component {
       selectors = ['today', 'week', 'full']
     } else if (length < 365) {
       selectors = ['today', 'week', 'month', 'full']
-    } else {
+    }
+    else {
       selectors = fullSelectors; 
     }
 
     if (this.props.noIntraday) {
       selectors = selectors.slice(1);
     }
+    
     this.setState({selectors});
 
   }

@@ -8,10 +8,8 @@ import '../App.css';
 import DataSelector from './DataSelector';
 
 // modules
-import { AreaChart } from 'react-chartkick'
-
-// import Google from 'chart.js'
-// ReactChartkick.addAdapter(Google);
+import Chartkick, { AreaChart } from 'react-chartkick'
+import 'chart.js'
 
 class StockGraph extends Component {
 
@@ -32,17 +30,20 @@ class StockGraph extends Component {
 
     var options = {
       scales: {
+        tooltips: true,
         yAxes: [
           {
-            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Josefin Sans' },
+            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Dosis' },
           }
         ],
         xAxes: [
           {
-            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Josefin Sans' },
+            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Dosis' },
           }
         ]
-      }
+      },
+
+
     };
 
 
@@ -50,7 +51,9 @@ class StockGraph extends Component {
 
     return (
       <div className="" style={styles.fullContent}>
-        {this.props.stockPrice &&
+
+        {/* this will display for single stocks */}
+        {!this.props.isExchange ?
           <div className="" style={styles.infoHolder}>
 
             {this.props.renderAutoCompleteForm()}
@@ -62,23 +65,42 @@ class StockGraph extends Component {
 
             </div>
 
+          </div> :
+
+          // Or this will display for an exchange rate 
+          <div className="" style={styles.infoHolder}>
+
+            {this.props.renderAutoCompleteForm()}
+
+            <div className="" style={styles.priceHolder}>
+              <p style={styles.info}>
+                {`1 ${this.props.fromCurrency} is equal to `}
+              </p>
+              <p style={styles.infoBold}>
+                {` ${this.props.exchangeRate} ${this.props.toCurrency}`}
+              </p>
+              <p style={styles.time}>{this.props.timeStamp}</p>
+            </div>
+
           </div>}
 
 
+
         <div className="" style={styles.graphHolder}>
+
+          {/* buttons to change the data on the graph */}
           <DataSelector
+            noIntraday={this.props.noIntraday}
             handleClick={this.props.handleSelectorClick}
             dataLength={this.props.dataLength}
           />
-          <div style={{zIndex: 3}}>
 
-            <AreaChart width="100%" height="300px"
-              library={options}
-              dataset={styles.chart}
-              data={this.props.data}
-              points={false}
-            />
-          </div>
+          <AreaChart width="100%" height="300px"
+            library={options}
+            dataset={styles.chart}
+            data={this.props.data}
+            points={false}
+          />
 
         </div>
 
@@ -89,21 +111,25 @@ class StockGraph extends Component {
 
 const styles = {
   fullContent: {
-
-    width: '100%'
+    width: '100%',
+    marginBottom: '15vh'
   },
   infoHolder: {
     // border: '1px solid white',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'space evenly'
+    alignItems: 'center'
   },
   priceHolder: {
-    margin: '10px'
+    // margin: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   infoBold: {
-    paddingTop: '25px',
+    // paddingTop: '25px',
     fontWeight: 'bolder',
     fontSize: '24px'
   },

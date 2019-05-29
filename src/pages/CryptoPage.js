@@ -6,8 +6,8 @@ import '../App.css';
 
 // components
 import AutoComplete from '../components/AutoComplete';
-import CryptoGraph from '../components/CryptoGraph';
-
+import StockGraph from '../components/StockGraph';
+import FetchErrorMessage from '../components/FetchErrorMessage';
 // currencies info
 import physicalCurrencies from '../assets/data/physicalCurrencies';
 import cryptoCurrencies from '../assets/data/cryptoCurrencies';
@@ -39,9 +39,10 @@ export default class ForexPage extends Component {
   constructor(props) {
     super(props);
 
-    this.chart = this.chart.bind(this);
     this.getForexData = this.getForexData.bind(this);
-    // this.onSelect = this.onSelect.bind(this);
+    this.renderAutoCompleteForm = this.renderAutoCompleteForm.bind(this);
+    this.handleSelectorClick = this.handleSelectorClick.bind(this);
+
     this.state = {
       data: null,
       exchangeRate: '',
@@ -55,11 +56,7 @@ export default class ForexPage extends Component {
     this.getForexData('daily');
   }
 
-  chart() {
-    // chart(this.state.data)
-  }
-
-  // unfortunately the npm package doesnt cover eveyrything, so we just
+  // unfortunately the npm package doesnt cover everything, so we just
   // do a node-fetch in this component 
 
   getForexData(type) {
@@ -94,12 +91,11 @@ export default class ForexPage extends Component {
 
         this.setState({
           fetchError: false,
-          dailyData: data, // the data that was fetched is named according to the selector,
-          // ex - 'intraday' selector is saved as this.state.intradayData
-          data, // the data that gets displayed, gets modified by buttons
-          type,
+          data,
+          graphData: data,
           timeStamp,
-          dataLength
+          dataLength,
+          graphDataLength: dataLength
         })
       })
       .catch((err) => {
@@ -153,16 +149,19 @@ export default class ForexPage extends Component {
     return dataObj;
   }
 
-  renderAutoCompleteForms() {
+  renderAutoCompleteForm() {
     // TODO - make elements for better reading below
+
+    const { fromCurrency, toCurrency } = this.state;
     return (
       <div className="row" style={styles.searchHolder}>
 
-        <div className="col-4 padding-0">
+        <div className="col">
           <AutoComplete
+
             items={cryptos}
             open={false}
-            value={this.state.fromCurrency}
+            value={fromCurrency}
             onChange={e => this.setState({ fromCurrency: e.target.value })}
             onSelect={(value) => {
               this.setState({
@@ -174,14 +173,14 @@ export default class ForexPage extends Component {
           />
         </div>
 
-        <div className="col-4" style={{textAlign: 'center' }}>
-          <i class="fas fa-random" style={{marginTop: '12px'}}></i>
+        <div className="col" style={{ textAlign: 'center' }}>
+          <i className="fas fa-arrow-right" style={{ marginTop: '12px' }}></i>
         </div>
 
-        <div className="col-4 padding-0">
+        <div className="col">
           <AutoComplete
             items={[{ label: 'United States Dollar', code: 'USD' }]}
-            value={this.state.toCurrency}
+            value={toCurrency}
           // Keeping this on USD at the moment as the others aren't actually reliable
 
           // onChange={e => this.setState({ toCurrency: e.target.value })}
@@ -202,6 +201,85 @@ export default class ForexPage extends Component {
 
   }
 
+
+  handleSelectorClick(selector) {
+
+    // if the selector is 'today' we'll change the data set to the intradayData
+    // everything else - 'week', 'month', 'year', - can be extracted from the graphData
+
+    // check data exists
+    if (!this.state.graphData) {
+      console.log("theres no data")
+      this.setState({ fetchError: true })
+    }
+
+    // get the current daily data and just section out what is needed 
+    // from the initial api call
+    let graphData = JSON.parse(JSON.stringify(this.state.data));
+    console.log(selector)
+    // console.log(graphData)
+
+    // week, month, year, 5 year are all handled with the daily data 
+    // 5 years is the returned length of the 'daily' api call,
+    // so we'll make this the default
+
+    // determine the data length based on the selector
+    let dataLength;
+    if (selector === 'week') {
+      dataLength = 7;
+    }
+    else if (selector === 'month') {
+      dataLength = 30;
+    }
+    else if (selector === 'year') {
+      dataLength = 364;
+    }
+    // default the data length to the full daily length, 5 year
+    else {
+      dataLength = Object.keys(graphData).length;
+    }
+
+    // now section the data accordingly
+    // make a new object
+    let newData = {};
+    let dateKeys = Object.keys(graphData);
+
+    // loop through the daily data using the length and assign new data
+    for (let i = 0; i < dataLength; i++) {
+      let key = dateKeys[i];
+      newData[key] = graphData[key];
+    }
+
+    // get the new min and max of the data
+    let keys = Object.keys(newData);
+    let min = Math.floor(newData[keys[0]]);
+    let max = Math.floor(newData[keys[0]]);
+
+    keys.forEach((key) => {
+      if (newData[key] > max) {
+        max = Math.floor(newData[key]);
+      }
+      if (newData[key] < min) {
+        min = Math.floor(newData[key]);
+      }
+    });
+
+    // pad the bottom end if it doesn't force it to < 0
+    min - 0.1 * min < 0 ? min = 0 : min = min - 0.1 * min;
+    // pad the top end
+    max = max + 0.15 * max;
+
+    this.setState({
+      graphData: newData,
+      graphDataLength: dataLength,
+      min,
+      max
+    })
+
+    console.log(newData)
+
+  }
+
   render() {
 
     return (
@@ -209,25 +287,30 @@ export default class ForexPage extends Component {
       // see npm package react-autocomplete. I wrapped them 
       // in a custom component to make it less confusing
 
-      <div style={styles.container}>
+      <div className="page" style={styles.container}>
 
-        {this.renderAutoCompleteForms()}
+        {this.state.graphData &&
+          <StockGraph
+            noIntraday={true}
+            isExchange={true}
+            data={this.state.graphData}
+            alpha={this.props.alpha}
+            fromCurrency={this.state.fromCurrency}
+            toCurrency={this.state.toCurrency}
+            exchangeRate={this.state.exchangeRate}
+            timeStamp={this.state.timeStamp}
+            min={this.state.min}
+            max={this.state.max}
+            dataLength={this.state.dataLength}
+            graphDataLength={this.state.graphDataLength}
+            renderAutoCompleteForm={this.renderAutoCompleteForm}
+            handleSelectorClick={this.handleSelectorClick}
+          />}
 
-        {this.state.data &&
-          <div className="">
-            <CryptoGraph
-              data={this.state.data}
-              alpha={this.props.alpha}
-              fromCurrency={this.state.fromCurrency}
-              toCurrency={this.state.toCurrency}
-              exchangeRate={this.state.exchangeRate}
-              timeStamp={this.state.timeStamp}
-              min={this.state.min}
-              max={this.state.max}
-              dataLength={this.state.dataLength}
-              fetchError={this.state.fetchError}
-            />
-          </div>}
+        {this.state.fetchError &&
+          <FetchErrorMessage />
+        }
+
       </div>
     );
   }
@@ -236,18 +319,23 @@ export default class ForexPage extends Component {
 const styles = {
   container: {
     padding: 10,
-    paddingTop: 115
+    paddingTop: '90px',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   searchHolder: {
-    width: '200px',
-    // border: '1px solid black',
-    margin: '3vh auto'
-    
+    margin: '20px 0px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  icon: {
-    // border: '1px solid black',
-    marginTop: '0.5vh',
-    color: 'black',
-    fontSize: 15,
+  spinner: {
+    position: 'absolute',
+    top: '40%',
+    left: '50%'
   }
 }

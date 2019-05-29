@@ -22,7 +22,6 @@ class AutoComplete extends Component {
 
   render() {
     return (
-      <div className="scroll">
         <Autocomplete className=""
           inputProps={{ style: styles.searchInput }}
           items={this.props.items}
@@ -43,34 +42,31 @@ class AutoComplete extends Component {
           onChange={this.props.onChange}
           onSelect={this.props.onSelect}
         />
-      </div>
     );
   }
 }
 
 const styles = {
   searchInput: {
-    margin: '1vh',
-    background: 'none',
-    padding: '0px',
-    width: '10vh',
+    // margin: '1vh',
+    background: 'rgba(0,0,0,0.5)',
+    padding: '4px',
+    width: '120px',
     border: 'none',
-    fontSize: '32px',
-    // fontWeight: 'bold',
-    color: 'white'
+    borderRadius: '4px',
+    fontSize: '30px',
+    color: 'white',
+    textAlign: 'center'
   },
   menuStyle: {
     zIndex: 1,
     borderRadius: '4px',
     position: 'fixed',
     background: 'rgba(25,25,25, 0.9)',
-    // padding: '5px',
-    // textAlign: 'center',
     fontSize: 12,
     height: '15vh',
     width: '10vh',
     overflow: 'auto',
-    // maxHeight: '50%',
   },
   icon: {
     margin: '1vh',
