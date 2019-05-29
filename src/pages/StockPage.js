@@ -270,7 +270,27 @@ export default class StockPage extends Component {
 
       <div className="page" style={styles.container}>
 
-        <FetchErrorMessage />
+        {this.state.graphData &&
+          <StockGraph
+            renderAutoCompleteForm={this.renderAutoCompleteForm}
+            handleSelectorClick={this.handleSelectorClick}
+            alpha={this.props.alpha}
+            stock={this.state.graphStock}
+            stockPrice={this.state.stockPrice}
+            data={this.state.graphData}
+            min={this.state.min}
+            max={this.state.max}
+            timeStamp={this.state.timeStamp}
+            dataLength={this.state.dataLength}
+            graphDataLength={this.state.graphDataLength}
+            intradayTimeStamp={this.state.intradayTimeStamp}
+            intradayData={this.state.intradayData} />
+
+        }
+
+        {this.state.fetchError &&
+          <FetchErrorMessage />
+        }
 
       </div>
     );
