@@ -107,11 +107,20 @@ export default class Example extends React.Component {
 
         <div style={styles.titleHolder}>
           <p style={styles.title} >Market Monitor</p>
-          {/* <i className="fab fa-wolf-pack-battalion" style={styles.icon}></i> */}
+
+          <Media query="(max-width: 499px)">
+            {matches =>
+              matches ? (
+                null
+              ) : (
+                <img className="logo" src={require('../assets/logo.png')} alt="logo"></img>
+                )
+            }
+          </Media>
         </div>
 
 
-        <Media query="(max-width: 599px)">
+        <Media query="(max-width: 699px)">
           {matches =>
             matches ? (
               this.renderDropDown()
@@ -148,10 +157,6 @@ const styles = {
     marginTop: '5px',
     fontSize: '28px',
     color: 'whitesmoke'
-  },
-  icon: {
-    // paddingTop: '1vh',
-    fontSize: 40,
   },
   linkHolder: {
     paddingRight: '5vw',

@@ -15,7 +15,7 @@
 
 /* for blur effects */
 .page {
-  background-color: rgba(0, 4, 41, 0.721); 
+  background-color: rgba(0, 7, 66, 0.721); 
 }
 
 body {
@@ -38,7 +38,7 @@ body {
   background-size: 2480px 1000px;
   background-position: 0% 0%; 
   background-attachment: fixed;
-  opacity: 0.1;
+  opacity: 0.15;
 }
 
 /* for the header and footer */
@@ -52,6 +52,10 @@ a:hover {
 
 /* Navigator component */
 
+.logo {
+  height: 30px;
+  width: 100px;
+}
 .nav-link, .fa-wolf-pack-battalion {
   transition: all 0.3s ease;
 }
@@ -82,20 +86,10 @@ a:hover {
 }
 
 
-/* input {
-  transition: all 0.3s ease;  
-  text-align: left;
-}
-
-input:active, input:focus {
+/* the autocomplete form */
+.autocomplete-selector:focus, .autocomplete-selector:active {
   outline: none;
 }
-input:hover {
-  color: rgb(133, 26, 221);
-  cursor: pointer;
-} */
-
-/* the autocomplete form */
 .autocomplete-item:hover {
   cursor: pointer;
 }
@@ -106,6 +100,7 @@ input:hover {
   border-radius: 10px;
   transition: all 0.3s ease;
   color:white;  
+  font-size: 20px;
 }
 .data-selector:hover {
   text-decoration: none;

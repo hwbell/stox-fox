@@ -129,7 +129,7 @@ const styles = {
     padding: '4px 8px',
     fontFamily: 'inherit',
     fontWeight: '400',
-    fontSize: '14px',
+    fontSize: '18px',
   },
   listTitle: {
     textAlign: 'left',

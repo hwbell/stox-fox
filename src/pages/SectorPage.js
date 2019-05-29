@@ -6,6 +6,7 @@ import '../App.css';
 
 // components
 import SectorsList from '../components/SectorsList';
+import FetchErrorMessage from '../components/FetchErrorMessage';
 
 class SectorPage extends Component {
 
@@ -37,9 +38,14 @@ class SectorPage extends Component {
       let displayTime = lastRefreshed.slice(0, lastRefreshed.indexOf('T') + 1)
 
       this.setState({
+        fetchError: false,
         data: res,
         lastRefreshed: displayTime
       })
+    })
+    .catch((err) => {
+      console.error(err)
+      this.setState({ fetchError: true })
     });
   }
 
@@ -47,7 +53,11 @@ class SectorPage extends Component {
     return (
       <div className="page" style={styles.container}>
 
-        <SectorsList data={this.state.data}/>
+        {this.state.data && <SectorsList data={this.state.data}/>}
+
+        {this.state.fetchError &&
+          <FetchErrorMessage />
+        }
 
       </div>
     );

@@ -82,7 +82,7 @@ class SectorListItem extends Component {
               <div className="row" style={styles.info}>
                 {/* here we show each sector and its change */}
                 <p style={styles.sector}>{`${sector}:`}</p>
-                <p style={{ margin: '1vw 0.5vw', color: deltaColor }}>{delta}</p>
+                <p style={{ margin: '16px 8px', color: deltaColor, fontWeight: 'bold' }}>{delta}</p>
               </div>
 
               <Progress style={barStyle} max={maxOfData + 1}
@@ -108,14 +108,15 @@ const styles = {
   },
   listTitle: {
     // color: 'black',
-    fontSize: 'calc(20px)',
+    fontSize: '24px',
     fontWeight: 'bold'
   },
   info: {
     padding: '8px'
   },
   sector: {
-    margin: '1vw',
+    margin: '12px 8px',
+    fontSize: '20px',
     fontWeight: 550
   },
 

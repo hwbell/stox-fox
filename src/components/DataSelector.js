@@ -83,6 +83,5 @@ const styles = {
     margin: '1vh auto'
   },
   button: {
-    fontSize: 16
   }
 }

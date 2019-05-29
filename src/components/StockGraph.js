@@ -9,7 +9,12 @@ import DataSelector from './DataSelector';
 
 // modules
 import Chartkick, { AreaChart } from 'react-chartkick'
-import 'chart.js'
+
+Chartkick.options = {
+  backgroundColor: 'none'
+}
+
+// import 'chart.js'
 
 class StockGraph extends Component {
 
@@ -27,25 +32,6 @@ class StockGraph extends Component {
   }
 
   render() {
-
-    var options = {
-      scales: {
-        tooltips: true,
-        yAxes: [
-          {
-            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Dosis' },
-          }
-        ],
-        xAxes: [
-          {
-            ticks: { fontSize: 14, fontColor: "#fff", fontFamily: 'Dosis' },
-          }
-        ]
-      },
-
-
-    };
-
 
     // set the min and max of the data
 
@@ -96,10 +82,23 @@ class StockGraph extends Component {
           />
 
           <AreaChart width="100%" height="300px"
-            library={options}
-            dataset={styles.chart}
             data={this.props.data}
             points={false}
+            // *** this is how to customize a google chart through the react-chartkick library
+            // kind of elusive in the docs, will just use straight up react-google-charts next time
+            library={{
+              areaOpacity: 0.8,
+              backgroundColor: 'none',
+              // tooltip: { textStyle: { color: 'rgb(7, 100, 206)', fontName: 'Sarabun' } },
+              vAxis: {
+                gridlines: { color: 'none' },
+                textStyle: { fontName: 'Dosis', bold: 0, fontSize: 14, color: 'white' },
+              },
+              hAxis: {
+                textStyle: { fontName: 'Dosis', bold: 0, fontSize: 14, color: 'white' },
+              },
+            }}
+
           />
 
         </div>
@@ -129,7 +128,7 @@ const styles = {
     alignItems: 'center'
   },
   infoBold: {
-    // paddingTop: '25px',
+    paddingTop: '10px',
     fontWeight: 'bolder',
     fontSize: '24px'
   },
@@ -137,7 +136,7 @@ const styles = {
     fontSize: '14px'
   },
   chart: {
-    // backgroundColor: 'none'
+    backgroundColor: 'none'
   }
 }
 

@@ -29,6 +29,7 @@ export default class FetchErrorMessage extends React.Component {
 
 const styles = {
   container: {
+    width: '80%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

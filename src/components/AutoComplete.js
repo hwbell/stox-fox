@@ -22,8 +22,8 @@ class AutoComplete extends Component {
 
   render() {
     return (
-        <Autocomplete className=""
-          inputProps={{ style: styles.searchInput }}
+        <Autocomplete 
+          inputProps={{ className: 'autocomplete-selector', style: styles.searchInput }}
           items={this.props.items}
           shouldItemRender={(item, value) => item.label.toLowerCase().indexOf(value.toLowerCase()) > -1}
           getItemValue={item => item.code}
@@ -34,7 +34,7 @@ class AutoComplete extends Component {
               //   bacgroundColor: highlighted ? 'rgb(0,0,0,0.7)' : 'none'
               // }}
             >
-              <p style={{fontSize: '14px'}} className="autocomplete-item">{item.code}</p>
+              <p style={{fontSize: '14px', color: 'rgba(53, 100, 253, 0.842)'}} className="autocomplete-item">{item.code}</p>
             </div>
           }
           menuStyle={styles.menuStyle}
@@ -47,25 +47,26 @@ class AutoComplete extends Component {
 }
 
 const styles = {
+
   searchInput: {
     // margin: '1vh',
-    background: 'rgba(0,0,0,0.5)',
-    padding: '4px',
+    background: 'rgba(245,245,245,0.8)',
+    padding: '2px',
     width: '120px',
     border: 'none',
     borderRadius: '4px',
-    fontSize: '30px',
-    color: 'white',
+    fontSize: '24px',
+    color: 'rgba(53, 100, 253, 0.842)',
     textAlign: 'center'
   },
   menuStyle: {
     zIndex: 1,
     borderRadius: '4px',
     position: 'fixed',
-    background: 'rgba(25,25,25, 0.9)',
+    background: 'rgba(245,245,245,0.8)',
     fontSize: 12,
-    height: '15vh',
-    width: '10vh',
+    height: '120px',
+    width: '100px',
     overflow: 'auto',
   },
   icon: {

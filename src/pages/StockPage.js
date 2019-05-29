@@ -246,9 +246,9 @@ export default class StockPage extends Component {
     });
 
     // pad the bottom end if it doesn't force it to < 0
-    min - 0.1*min < 0 ? min = 0 : min = min - 0.1*min;
+    min - 0.1 * min < 0 ? min = 0 : min = min - 0.1 * min;
     // pad the top end
-    max = max + 0.15*max;
+    max = max + 0.15 * max;
 
     this.setState({
       graphData: newData,
@@ -270,27 +270,7 @@ export default class StockPage extends Component {
 
       <div className="page" style={styles.container}>
 
-        {this.state.graphData &&
-          <StockGraph
-            renderAutoCompleteForm={this.renderAutoCompleteForm}
-            handleSelectorClick={this.handleSelectorClick}
-            alpha={this.props.alpha}
-            stock={this.state.graphStock}
-            stockPrice={this.state.stockPrice}
-            data={this.state.graphData}
-            min={this.state.min}
-            max={this.state.max}
-            timeStamp={this.state.timeStamp}
-            dataLength={this.state.dataLength}
-            graphDataLength={this.state.graphDataLength}
-            intradayTimeStamp={this.state.intradayTimeStamp}
-            intradayData={this.state.intradayData}/>
-
-          }
-
-          {this.state.fetchError &&
-            <FetchErrorMessage />
-          }
+        <FetchErrorMessage />
 
       </div>
     );
